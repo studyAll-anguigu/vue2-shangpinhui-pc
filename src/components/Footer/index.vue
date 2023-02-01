@@ -102,6 +102,7 @@ export default {
 .footer-bottom p {
   text-align: center;
   font-size: 13px;
+  margin-top: 10px;
 }
 .footer-bottom p span {
   border-right: 1px solid #000;

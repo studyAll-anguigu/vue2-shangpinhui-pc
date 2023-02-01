@@ -66,7 +66,7 @@ export default {
   margin: auto;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
+  padding: 20px 0px;
 }
 
 .header-bottom form input {

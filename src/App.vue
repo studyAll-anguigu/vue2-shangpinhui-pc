@@ -3,7 +3,9 @@
     <XHeader></XHeader>
     <!-- 展示路由组件 -->
     <router-view></router-view>
-    <XFooter></XFooter>
+
+    <!-- 如果是login和resgister就不显示 -->
+    <XFooter v-if="!$route.meta.isHideFooter"></XFooter>
   </div>
 </template>
 <script>

@@ -51,10 +51,7 @@ export default {
   font-size: 13px;
   color: #666;
 }
-.header-top-left {
-}
-.header-nav {
-}
+
 .header-nav span {
   border-right: 1px solid #666;
   margin-right: 5px;
@@ -72,10 +69,6 @@ export default {
   padding-top: 20px;
 }
 
-.header-bottom img {
-}
-.header-bottom form {
-}
 .header-bottom form input {
   width: 400px;
   border: 2px solid red;

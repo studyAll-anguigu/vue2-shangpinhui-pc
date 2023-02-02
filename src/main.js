@@ -5,7 +5,7 @@ import App from './App.vue';
 import router from './router/index';
 // 引入重置默认样式
 import './styles/normalize.css';
-
+import 'nprogress/nprogress.css';
 Vue.config.productionTip = false;
 
 new Vue({

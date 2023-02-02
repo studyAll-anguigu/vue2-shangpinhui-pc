@@ -8,28 +8,25 @@
           <div class="all-sort-list2">
             <div
               class="item"
-              v-for="item in baseCategoryList"
-              :key="item.categoryId"
+              v-for="c1 in baseCategoryList"
+              :key="c1.categoryId"
             >
               <h3>
-                <a href="">{{ item.categoryName }}</a>
+                <a>{{ c1.categoryName }}</a>
               </h3>
               <div class="item-list clearfix">
                 <div
                   class="subitem"
-                  v-for="secondTtem in item.categoryChild"
-                  :key="secondTtem.categoryId"
+                  v-for="c2 in c1.categoryChild"
+                  :key="c2.categoryId"
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ secondTtem.categoryName }}</a>
+                      <a>{{ c2.categoryName }}</a>
                     </dt>
                     <dd>
-                      <em
-                        v-for="child in secondTtem.categoryChild"
-                        :key="child.categoryId"
-                      >
-                        <a href="">{{ child.categoryName }}</a>
+                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                        <a href="">{{ c3.categoryName }}</a>
                       </em>
                     </dd>
                   </dl>
@@ -63,24 +60,13 @@ export default {
     };
   },
   mounted() {
-    this.baseCategoryList;
-  },
-  created() {
     this.getBaseCategoryList();
   },
   methods: {
     // 获取三级目录列表
     async getBaseCategoryList() {
-      try {
-        // 调用repgetBaseCategoryList请求函数，去获取服务器数据
-        const result = await repgetBaseCategoryList();
-        if (result.data.code === 200) {
-          this.baseCategoryList = result.data.data;
-          console.log('type:', this.baseCategoryList);
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      const result = await repgetBaseCategoryList();
+      this.baseCategoryList = result.slice(0, 15); // 只要15条记录
     },
   },
 };

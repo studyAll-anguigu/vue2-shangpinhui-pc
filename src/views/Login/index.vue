@@ -8,13 +8,23 @@
             <form action="##">
               <div class="input-text clearFix">
                 <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" />
+                <input
+                  type="text"
+                  v-model="phone"
+                  placeholder="邮箱/用户名/手机号"
+                />
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" />
+                <input
+                  type="text"
+                  placeholder="请输入密码"
+                  v-model="password"
+                />
               </div>
-              <button class="btn">登&nbsp;&nbsp;录</button>
+              <button class="btn" @click.prevent="login">
+                登&nbsp;&nbsp;录
+              </button>
             </form>
             <div class="call clearFix">
               <router-link class="register" to="/register"
@@ -43,8 +53,28 @@
   </div>
 </template>
 <script>
+import { reqUserLogin } from '@/api/user';
 export default {
   name: 'XLogin',
+  data() {
+    return {
+      phone: '13020220202',
+      password: '222222',
+    };
+  },
+  methods: {
+    // 登录
+    async login() {
+      const result = await reqUserLogin(this.phone, this.password);
+      if (result.token && result.userId) {
+        // 保存用户登录信息到vuex
+        this.$store.state.usersInfo = result;
+        localStorage.setItem('userInfo', JSON.stringify(result));
+        // 跳转首页
+        this.$router.push({ name: 'Home', params: { ...result } });
+      }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

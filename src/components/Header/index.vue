@@ -2,10 +2,17 @@
   <div class="header">
     <div class="header-top">
       <div class="header-top-main">
-        <span class="header-top-left">
-          尚品汇欢迎您！ 请 <router-link to="/login">登录</router-link> |
-          <router-link to="/register">免费注册</router-link>
-        </span>
+        <div class="header-top-left">
+          尚品汇欢迎您！
+          <span v-if="!$store.state.usersInfo?.token"
+            >请 <router-link to="/login">登录</router-link> |
+            <router-link to="/register">免费注册</router-link>
+          </span>
+          <span v-else>
+            {{ $store.state.usersInfo.nickName }}
+            <button @click="logout">退出</button>
+          </span>
+        </div>
         <div class="header-nav">
           <span>我的订单</span>
           <span>我的购物车</span>
@@ -32,9 +39,19 @@
 <script>
 export default {
   name: 'XHeader',
+  created() {
+    console.log('store.state:', this.$store.state);
+  },
   methods: {
     toSeach() {
       console.log('搜索');
+    },
+    // 退出登录
+    logout() {
+      console.log('退出');
+      this.$router.push({
+        name: 'Login',
+      });
     },
   },
 };

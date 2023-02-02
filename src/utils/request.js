@@ -43,6 +43,7 @@ request.interceptors.request.use(
   // 第一个参数：请求成功时的处理回调。
   // 参数： config，就是请求配置
   (config) => {
+    // console.log('config:', config);
     NProgress.start(); // 开始进度条
     return config; // 必须返回config
   },
@@ -55,6 +56,7 @@ request.interceptors.response.use(
   //第1个参数：响应成功时的处理 。  2xx 范围内的状态码都会触发该函数。
   // 只有功能状态code=200时，才返回成功的状态，否则就返回失败的状态
   (response) => {
+    // console.log('respone:', response);
     NProgress.done(); // 结束进度条
     if (response.data.code === 200) {
       return response.data.data;

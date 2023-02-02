@@ -10,6 +10,6 @@ import request from '@/utils/request';
 export const repgetBaseCategoryList = () => {
   return request({
     method: 'get',
-    url: '/product/getBaseCategoryList', // 因为封装axios时，已经添加了baseURL = '/api'  ,因为这里的地址不需要添加/api
+    url: '/product/getBaseCategoryList', // 因为封装axios时，已经添加了baseURL = '/api'  ,因此这里的地址不需要添加/api
   });
 };

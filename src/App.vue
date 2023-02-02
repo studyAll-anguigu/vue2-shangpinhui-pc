@@ -1,7 +1,7 @@
 <template>
   <div>
     <XHeader></XHeader>
-    <div class="container">
+    <div class="app-container">
       <!-- 展示路由组件 -->
       <router-view></router-view>
     </div>
@@ -15,12 +15,13 @@ import XFooter from '@/components/Footer';
 import XHeader from '@/components/Header';
 
 export default {
+  name: 'App',
   components: { XFooter, XHeader },
 };
 </script>
 
 <style lang="less">
-.container {
+.app-container {
   min-height: 42vh;
 }
 </style>

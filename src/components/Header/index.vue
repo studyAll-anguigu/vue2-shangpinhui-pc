@@ -19,8 +19,10 @@
       </div>
     </div>
     <div class="header-bottom">
-      <img src="@/assets/logo.png" alt="" />
-      <form>
+      <router-link to="/home"
+        ><img src="@/assets/logo.png" alt=""
+      /></router-link>
+      <form @submit.prevent="toSeach">
         <input type="text" />
         <button>搜索</button>
       </form>
@@ -30,6 +32,11 @@
 <script>
 export default {
   name: 'XHeader',
+  methods: {
+    toSeach() {
+      console.log('搜索');
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

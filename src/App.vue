@@ -1,8 +1,10 @@
 <template>
   <div>
     <XHeader></XHeader>
-    <!-- 展示路由组件 -->
-    <router-view></router-view>
+    <div class="container">
+      <!-- 展示路由组件 -->
+      <router-view></router-view>
+    </div>
 
     <!-- 如果是login和resgister就不显示 -->
     <XFooter v-if="!$route.meta.isHideFooter"></XFooter>
@@ -17,4 +19,8 @@ export default {
 };
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+.container {
+  min-height: 42vh;
+}
+</style>

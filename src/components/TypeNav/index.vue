@@ -168,12 +168,12 @@ export default {
             font-size: 14px;
             font-weight: 400;
             overflow: hidden;
-            padding: 0 20px;
             margin: 0;
             width: 100%;
             a {
               color: #333;
               display: block;
+              padding: 0px 20px;
             }
           }
 

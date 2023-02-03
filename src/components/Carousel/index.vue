@@ -27,27 +27,35 @@
 // 例子：https://swiperjs.com/demos/145-css-mode/core
 
 // 完整引入swiper
-import 'swiper/swiper-bundle.esm.js';
-import 'swiper/swiper-bundle.min.css';
+// import 'swiper/swiper-bundle.min.css';
+// import Swiper, { Pagination, Navigation, Autoplay } from 'swiper';
+
+// 按需引入 模块 以及 对应的样式
 import Swiper, { Pagination, Navigation, Autoplay } from 'swiper';
+import 'swiper/css'; // 默认导出的swiper
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 
 export default {
   name: 'XCarousel',
   components: {},
   mounted() {
     new Swiper('.swiper', {
+      speed: 1000, //切换的速度
+      loop: true, // 循环播放
+      modules: [Pagination, Navigation, Autoplay],
       autoplay: {
         delay: 2000, // 完全切换进入的时间
         pauseOnMouseEnter: true, // 鼠标进入时，停止播放
         disableOnInteraction: false, // 设置为false，自动播放将不会在用户交互(滑动)后被禁用，每次交互后都会重新启动
       },
-      speed: 1000, //切换的速度
-      loop: true, // 循环播放
-      modules: [Pagination, Navigation, Autoplay],
+      // 左右箭头
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
+      // 指示灯（小圆点）
       pagination: {
         el: '.swiper-pagination',
         type: 'bullets',

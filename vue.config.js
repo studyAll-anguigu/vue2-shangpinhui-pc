@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service');
+const setupMock = require('./src/mock/index');
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
@@ -14,32 +15,34 @@ module.exports = defineConfig({
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
-
-      devServer.app.get('/mock/getHomeBanner', function (req, res) {
-        res.json({
-          code: 200,
-          message: '成功',
-          succuss: true,
-          data: [
-            {
-              id: '1',
-              imgUrl: '/images/banner1.jpg',
-            },
-            {
-              id: '2',
-              imgUrl: '/images/banner2.jpg',
-            },
-            {
-              id: '3',
-              imgUrl: '/images/banner3.jpg',
-            },
-            {
-              id: '4',
-              imgUrl: '/images/banner4.jpg',
-            },
-          ],
-        });
-      });
+      // 模块化，给devServer添加路由
+      setupMock(devServer.app);
+      // 直接写在这里
+      // devServer.app.get('/mock/getHomeBanner', function (req, res) {
+      //   res.json({
+      //     code: 200,
+      //     message: '成功',
+      //     succuss: true,
+      //     data: [
+      //       {
+      //         id: '1',
+      //         imgUrl: '/images/banner1.jpg',
+      //       },
+      //       {
+      //         id: '2',
+      //         imgUrl: '/images/banner2.jpg',
+      //       },
+      //       {
+      //         id: '3',
+      //         imgUrl: '/images/banner3.jpg',
+      //       },
+      //       {
+      //         id: '4',
+      //         imgUrl: '/images/banner4.jpg',
+      //       },
+      //     ],
+      //   });
+      // });
     },
   },
 });

@@ -39,8 +39,15 @@ import 'swiper/css/autoplay';
 
 export default {
   name: 'XCarousel',
+  props: {
+    imglist: {
+      type: Array, // 指定接收数据的类型为数组
+      required: true, //不需要传数据过来
+    },
+  },
   components: {},
   mounted() {
+    console.log('5555', this.imglist);
     new Swiper('.swiper', {
       speed: 1000, //切换的速度
       loop: true, // 循环播放

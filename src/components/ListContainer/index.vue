@@ -3,7 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <Carousel></Carousel>
+        <Carousel :imglist="imgList"></Carousel>
       </div>
       <div class="right">
         <div class="news">
@@ -80,9 +80,20 @@
 
 <script>
 import Carousel from '@/components/Carousel';
+import { reqGetHomeBanner } from '@/api/home-mock';
 export default {
   name: 'ListContainer',
+  data() {
+    return {
+      imgList: [],
+    };
+  },
   components: { Carousel },
+  async mounted() {
+    // 获取轮播图的土图片
+    const res = await reqGetHomeBanner();
+    this.imgList = res;
+  },
 };
 </script>
 

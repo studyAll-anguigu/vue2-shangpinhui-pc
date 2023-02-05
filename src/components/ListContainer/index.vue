@@ -80,7 +80,7 @@
 
 <script>
 import Carousel from '@/components/Carousel';
-import { reqGetHomeBanner } from '@/api/home-mock';
+import { reqGetHomeBanner } from '@/api/home';
 export default {
   name: 'ListContainer',
   data() {

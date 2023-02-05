@@ -5,7 +5,7 @@
     <Recommend></Recommend>
     <Rank></Rank>
     <Like></Like>
-    <Floor></Floor>
+    <Floor v-for="floor in floorsData" :key="floor.id" :floor="floor"></Floor>
     <Brand></Brand>
   </div>
 </template>
@@ -18,6 +18,7 @@ import Like from '@/components/Like';
 import Floor from '@/components/Floor';
 import Brand from '@/components/Brand';
 
+import { reqGetHomeFloors } from '@/api/home';
 export default {
   name: 'XHome',
   components: {
@@ -28,6 +29,15 @@ export default {
     Like,
     Floor,
     Brand,
+  },
+  data() {
+    return {
+      floorsData: [],
+    };
+  },
+  async mounted() {
+    const data = await reqGetHomeFloors();
+    this.floorsData = data;
   },
 };
 </script>

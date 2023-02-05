@@ -40,7 +40,7 @@ export default {
   mounted() {},
   watch: {
     imglist() {
-      console.log('5555', this.imglist);
+      console.log('crousel轮播组件接收到的数据：', this.imglist);
       this.$nextTick(() => {
         new Swiper('.swiper', {
           loop: true, // 循环播放

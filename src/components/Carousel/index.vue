@@ -39,28 +39,32 @@ export default {
   components: {},
   mounted() {},
   watch: {
-    imglist() {
-      console.log('crousel轮播组件接收到的数据：', this.imglist);
-      this.$nextTick(() => {
-        new Swiper('.swiper', {
-          loop: true, // 循环播放
-          modules: [Pagination, Navigation, Autoplay],
-          autoplay: {
-            pauseOnMouseEnter: true, // 鼠标进入时，停止播放
-            disableOnInteraction: false, // 设置为false，自动播放将不会在用户交互(滑动)后被禁用，每次交互后都会重新启动
-          },
-          // 左右箭头
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-          },
-          // 指示灯（小圆点）
-          pagination: {
-            el: '.swiper-pagination',
-            type: 'bullets',
-          },
+    imglist: {
+      handler() {
+        // console.log('crousel轮播组件接收到的数据：', this.imglist);
+        console.log('crousel监听到了数据变化', this.imglist);
+        this.$nextTick(() => {
+          new Swiper('.swiper', {
+            loop: true, // 循环播放
+            modules: [Pagination, Navigation, Autoplay],
+            autoplay: {
+              pauseOnMouseEnter: true, // 鼠标进入时，停止播放
+              disableOnInteraction: false, // 设置为false，自动播放将不会在用户交互(滑动)后被禁用，每次交互后都会重新启动
+            },
+            // 左右箭头
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            // 指示灯（小圆点）
+            pagination: {
+              el: '.swiper-pagination',
+              type: 'bullets',
+            },
+          });
         });
-      });
+      },
+      immediate: true,
     },
   },
 };
@@ -100,4 +104,14 @@ export default {
 -4、 拓展：
 his.$nextTicl()函数的作用：主要把函数里面的操作放入回调队列里面。并没有直接修改数据的功能，
 仅仅把函数里面的操作放入一个异步回到队列，先执行其它同步的任务后，在执行这个函数的操作。
+
+
+4、多次服用crousel组件时，其他服用的轮播图不会自动播放。
+- 现象： 除了第一个轮播正常，其他轮播不正常。
+- 原因： crousel组件只会触发一次,只有第一次引用这个crousel组件时，才会触发。
+- 解决 ： 开启立即执行，immdeiate:true
+
+
+
+
 -->

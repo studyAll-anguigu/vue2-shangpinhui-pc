@@ -61,7 +61,7 @@ export default {
   props: ['floor'],
   components: { Carousel },
   created() {
-    console.log('floor', this.floor);
+    // console.log('floor', this.floor);
   },
 };
 </script>

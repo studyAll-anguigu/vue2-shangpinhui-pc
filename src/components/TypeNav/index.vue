@@ -110,14 +110,23 @@ export default {
     toSearch(e) {
       // 获取自定义属性的值
       const { id, name, level } = e.target.dataset;
+
       // 判断是否点击空白区域
       if (!id) return;
+
+      const queryStr = {
+        categoryName: name,
+        [`category${level}Id`]: id,
+      };
+      // 判断当前是否存在搜索关键词
+      const keyword = this.$route.query.keyword;
+      if (keyword) {
+        queryStr.keyword = keyword;
+      }
+
       this.$router.push({
         name: 'Search',
-        query: {
-          categoryName: name,
-          [`category${level}Id`]: id,
-        },
+        query: queryStr,
       });
     },
   },

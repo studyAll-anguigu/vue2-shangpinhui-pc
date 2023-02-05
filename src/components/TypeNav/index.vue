@@ -21,9 +21,12 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div class="nav-left">
-        <h2 class="all">全部商品分类</h2>
-        <div class="sort">
+      <div class="nav-left" @mouseleave="isShowTypeNav = false">
+        <h2 class="all" @mouseenter="isShowTypeNav = true">全部商品分类</h2>
+        <div
+          class="sort"
+          v-show="this.$route.path === '/home' || isShowTypeNav"
+        >
           <div class="all-sort-list2" @click="toSearch">
             <div
               class="item"
@@ -91,6 +94,7 @@ export default {
   data() {
     return {
       baseCategoryList: [],
+      isShowTypeNav: false,
     };
   },
   mounted() {

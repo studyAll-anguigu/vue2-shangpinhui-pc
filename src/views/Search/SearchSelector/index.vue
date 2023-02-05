@@ -5,8 +5,12 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademar in trademarkList" :key="trademar.id">
-            {{ trademar.tmName }}
+          <li
+            v-for="trademark in trademarkList"
+            :key="trademark.id"
+            @click="serchtrademark(trademark.tmId, trademark.tmName)"
+          >
+            {{ trademark.tmName }}
           </li>
         </ul>
       </div>
@@ -36,6 +40,14 @@ export default {
     attrsList: {
       type: Array,
       required: true,
+    },
+  },
+
+  methods: {
+    serchtrademark(tmId, tmName) {
+      // 触发父组件的serchtrademark事件
+      const str = `${tmId}:${tmName}`;
+      this.$emit('serchtrademark', str);
     },
   },
 };

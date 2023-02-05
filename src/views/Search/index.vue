@@ -20,7 +20,11 @@
         </div>
 
         <!-- 搜索器 -->
-        <SearchSelector :attrsList="attrsList" :trademarkList="trademarkList" />
+        <SearchSelector
+          :attrsList="attrsList"
+          :trademarkList="trademarkList"
+          @serchtrademark="serchtrademark"
+        />
 
         <!--商品展示区-->
         <div class="details clearfix">
@@ -156,6 +160,14 @@ export default {
       this.attrsList = res.attrsList;
       this.goodsList = res.goodsList;
       this.trademarkList = res.trademarkList;
+    },
+
+    // 按照品牌搜素商品列表
+    serchtrademark(trademarkStr) {
+      // 更新searchOptons信息，只要数据一边，触发watch，就出发搜索请求
+      this.searchOptons.trademark = trademarkStr;
+      this.getSearchGoodsList();
+      console.log('品牌搜索参数：', typeof trademarkStr);
     },
   },
 };

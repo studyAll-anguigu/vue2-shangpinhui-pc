@@ -125,17 +125,38 @@ export default {
     return {
       attrsList: [], // 属性列表
       goodsList: [], // 商品列表
-      trademarkList: [], // 品牌列表i
+      trademarkList: [], // 品牌列表
+      searchOptons: {
+        props: [], // 商品属性的数组: ["属性ID:属性值:属性名"]
+        trademark: '', // 品牌: "ID:品牌名称"    示例: "1:苹果"
+        order: '1:desc', // 排序方式 .  排序类型(type)=>  1: 综合 2: 价格;   排序标识(flag)=>  asc: 升序  desc: 降序
+        pageNo: 1, // 页码
+        pageSize: 5, // 每页条数
+      },
     };
   },
   components: { TypeNav, SearchSelector },
-  async mounted() {
-    // console.log('search页面收到的params:', this.$route.query);
-    const res = await reqGetSearchGoodsList({ pageNo: 1, pageSize: 5 });
-    this.attrsList = res.attrsList;
-    this.goodsList = res.goodsList;
-    this.trademarkList = res.trademarkList;
-    console.log('搜索商品列表', res);
+  mounted() {
+    this.getSearchGoodsList();
+  },
+  watch: {
+    $route() {
+      // 监听整个route路由对象
+      this.getSearchGoodsList();
+    },
+  },
+  methods: {
+    // 获取商品列表
+    async getSearchGoodsList() {
+      console.log('发送搜索请求');
+      const res = await reqGetSearchGoodsList({
+        ...this.$route.query,
+        ...this.searchOptons,
+      });
+      this.attrsList = res.attrsList;
+      this.goodsList = res.goodsList;
+      this.trademarkList = res.trademarkList;
+    },
   },
 };
 </script>
@@ -277,13 +298,14 @@ export default {
                 padding-left: 15px;
                 width: 215px;
                 height: 255px;
-
+                border: 1px solid #ddd;
+                padding: 10px;
                 a {
                   color: #666;
 
                   img {
                     max-width: 100%;
-                    height: auto;
+                    height: 250px;
                     vertical-align: middle;
                   }
                 }

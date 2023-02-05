@@ -53,6 +53,7 @@ export default {
       this.$router.history.push({
         name: 'Search',
         query: {
+          ...this.$route.query, // 保留当前路由下 的其他query参数 。并且注意顺序
           keyword: this.keyword,
         },
       });

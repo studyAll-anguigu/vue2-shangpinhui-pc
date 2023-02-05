@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper">
+  <div class="swiper" ref="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="img in imglist" :key="img.id">
         <img :src="img.imgUrl" alt="banner" />
@@ -40,11 +40,14 @@ export default {
   mounted() {},
   watch: {
     imglist: {
-      handler() {
+      handler(newValue) {
         // console.log('crousel轮播组件接收到的数据：', this.imglist);
         console.log('crousel监听到了数据变化', this.imglist);
+        // 数据为空时，退出
+        if (!newValue.length) return;
+
         this.$nextTick(() => {
-          new Swiper('.swiper', {
+          new Swiper(this.$refs.swiper, {
             loop: true, // 循环播放
             modules: [Pagination, Navigation, Autoplay],
             autoplay: {
@@ -112,6 +115,9 @@ his.$nextTicl()函数的作用：主要把函数里面的操作放入回调队�
 - 解决 ： 开启立即执行，immdeiate:true
 
 
+5、我们只服用了三次，但是复发了四次监听
+- 原因： 第一个组件触发了两次，第一个渲染没有值的时候也触发了一次
+- 解决方案： 判断数组是否为空
 
 
 -->

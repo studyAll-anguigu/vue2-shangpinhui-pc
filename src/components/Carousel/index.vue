@@ -41,8 +41,7 @@ export default {
   watch: {
     imglist: {
       handler(newValue) {
-        // console.log('crousel轮播组件接收到的数据：', this.imglist);
-        console.log('crousel监听到了数据变化', this.imglist);
+        // console.log('crousel监听到了数据变化', this.imglist);
         // 数据为空时，退出
         if (!newValue.length) return;
 

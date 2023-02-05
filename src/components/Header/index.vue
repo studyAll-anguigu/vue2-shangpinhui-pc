@@ -30,7 +30,7 @@
         ><img src="@/assets/logo.png" alt=""
       /></router-link>
       <form @submit.prevent="toSeach">
-        <input type="text" />
+        <input type="text" v-model="keyword" />
         <button>搜索</button>
       </form>
     </div>
@@ -39,12 +39,23 @@
 <script>
 export default {
   name: 'XHeader',
+  data() {
+    return {
+      keyword: '',
+    };
+  },
   created() {
     console.log('store.state:', this.$store.state);
   },
   methods: {
     toSeach() {
-      console.log('搜索');
+      // this.$router.push : 如果使用这个方式的话，当重复点击进入相同路径的页面的时候，会报错的。但不影响功能的使用。
+      this.$router.history.push({
+        name: 'Search',
+        query: {
+          keyword: this.keyword,
+        },
+      });
     },
     // 退出登录
     logout() {

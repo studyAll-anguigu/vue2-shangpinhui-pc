@@ -1,32 +1,36 @@
 <template>
   <div class="x-pagination">
-    <!-- 前一页 -->
+    <!-- 前一页按钮 -->
     <button type="button" class="btn-prev">
       <i class="iconfont icon-arrow-left-bold"></i>
     </button>
     <ul class="x-pager">
-      <li class="number">1</li>
-      <li class="number">2</li>
-      <li class="number">3</li>
+      <template v-for="(page, index) in pages">
+        <li
+          :class="['number', page === currentPage ? 'active' : '']"
+          v-if="index <= 5"
+          :key="page"
+          @click="handleCurrentChange(page)"
+        >
+          {{ page }}
+        </li>
+      </template>
       <li class="number"><i class="iconfont icon-elipsis"></i></li>
-      <li class="number">7</li>
-      <li class="number">8</li>
-      <li class="number">9</li>
-      <li class="number">10</li>
-      <li class="number"><i class="iconfont icon-elipsis"></i></li>
-      <li class="number active">20</li>
     </ul>
-    <!-- 后一页 -->
+    <!-- 后一页按钮 -->
     <button type="button" disabled="disabled" class="btn-next">
       <i class="iconfont icon-arrow-right-bold"></i>
     </button>
     <!-- 切换每页记录条数 -->
     <span class="x-pagination__sizes">
-      <select>
-        <option value="5">5页/条</option>
-        <option value="10">10页/条</option>
-        <option value="15">15页/条</option>
-        <option value="20">20页/条</option>
+      <select v-model="currentPageSize">
+        <option
+          :value="numer"
+          v-for="(numer, index) in pageSizeList"
+          :key="index"
+        >
+          {{ numer }}页/条
+        </option>
       </select>
     </span>
     <!-- 跳转到某一页 -->
@@ -44,28 +48,69 @@
       页
     </span>
 
-    <span class="x-pagination__total">共 400 条</span>
+    <span class="x-pagination__total">共 {{ total }} 条</span>
   </div>
 </template>
 
 <script>
 export default {
   name: 'XPagination',
+  props: {
+    // 记录总数
+    total: {
+      type: Number,
+      required: true,
+    },
+    // 每页记录条数
+    pageSize: {
+      type: Number,
+      required: true,
+    },
+    // 当前页码
+    currentPage: {
+      type: Number,
+      required: true,
+    },
+    // 页码的数组
+    pageSizeList: {
+      type: Array,
+    },
+  },
   data() {
     return {
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      currentPageSize: 5,
     };
   },
+  computed: {
+    // // 存放所有页码
+    pages() {
+      return Math.ceil(this.total / this.pageSize);
+    },
+  },
+  mounted() {
+    console.log('pagination pagesize:', this.pageSize);
+    console.log('pagination currentPage:', this.currentPage);
+    console.log('pagination pageSizeList:', this.pageSizeList);
+  },
+  watch: {
+    total() {
+      console.log('pagination total:', this.total);
+    },
+    currentPageSize: {
+      handler(newvalue) {
+        // 触发父组件改变 每页记录条数的事件
+        this.$emit('changeSize', newvalue);
+      },
+    },
+  },
   methods: {
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleCurrentChange(crrentPage) {
+      // 触发父组件的changePage事件
+      this.$emit('changePage', crrentPage);
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
+    // changePageSize(pagesize) {
+    //   console.log('pagination,改变了页数', pagesize);
+    // },
   },
 };
 </script>
@@ -79,9 +124,7 @@ export default {
 .x-pager {
   display: flex;
 }
-.x-pagination__jump {
-  display: flex;
-}
+
 .number {
   margin: 0 5px;
   background-color: #f4f4f5;
@@ -116,6 +159,8 @@ export default {
   cursor: pointer;
 }
 .x-pagination__jump {
+  display: flex;
+  align-items: center;
   margin-left: 24px;
   font-weight: 400;
   color: #606266;

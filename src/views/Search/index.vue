@@ -135,7 +135,24 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Paginaton></Paginaton>
+          <!-- <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage2"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="sizes, prev, pager, next"
+            :total="1000"
+          >
+          </el-pagination> -->
+          <Paginaton
+            :total="total"
+            :pageSize="searchOptons.pageSize"
+            :currentPage="searchOptons.pageNo"
+            :pageSizeList="[5, 10, 15, 20, 50, 100]"
+            @changeSize="handleSizeChange"
+            @changePage="handleCurrentChange"
+          ></Paginaton>
         </div>
       </div>
     </div>
@@ -160,6 +177,7 @@ export default {
         pageNo: 1, // 页码
         pageSize: 5, // 每页条数
       },
+      total: 0,
     };
   },
   components: { TypeNav, SearchSelector, Paginaton },
@@ -188,7 +206,8 @@ export default {
       this.attrsList = res.attrsList;
       this.goodsList = res.goodsList;
       this.trademarkList = res.trademarkList;
-      console.log('商品列表：', res);
+      this.total = res.total;
+      // console.log('商品列表：', res);
     },
 
     // 按照品牌搜素商品列表
@@ -256,6 +275,19 @@ export default {
       }
       this.searchOptons.order = `${newOrderType}:${oldOrderFlag}`;
       this.getSearchGoodsList(); //刷新页面
+    },
+
+    // 切换每页记录条数处理函数
+    handleSizeChange(pagesize) {
+      this.searchOptons.pageSize = pagesize;
+      this.getSearchGoodsList();
+      console.log('改变pagesize', pagesize);
+    },
+    // 改变当前页码
+    handleCurrentChange(page) {
+      this.searchOptons.pageNo = page;
+      console.log('改变 curentpage ', page);
+      this.getSearchGoodsList();
     },
   },
 };

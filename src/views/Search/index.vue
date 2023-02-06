@@ -58,23 +58,47 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                  :class="[this.orderStr[0] === '1' ? 'active' : '']"
+                  @click="setOrder('1')"
+                >
+                  <a>
+                    综合
+                    <i
+                      v-show="this.orderStr[0] === '1'"
+                      :class="[
+                        'iconfont',
+                        `icon-direction-${
+                          this.orderStr[1] === 'asc' ? 'up' : 'down'
+                        }`,
+                      ]"
+                    ></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="#">销量</a>
+                  <a>销量</a>
                 </li>
                 <li>
-                  <a href="#">新品</a>
+                  <a>新品</a>
                 </li>
                 <li>
-                  <a href="#">评价</a>
+                  <a>评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li
+                  :class="[this.orderStr[0] === '2' ? 'active' : '']"
+                  @click="setOrder('2')"
+                >
+                  <a
+                    >价格<i
+                      v-show="this.orderStr[0] === '2'"
+                      :class="[
+                        'iconfont',
+                        `icon-direction-${
+                          this.orderStr[1] === 'asc' ? 'up' : 'down'
+                        }`,
+                      ]"
+                    ></i
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -169,6 +193,11 @@ export default {
   mounted() {
     this.getSearchGoodsList();
   },
+  computed: {
+    orderStr() {
+      return this.searchOptons.order.split(':');
+    },
+  },
   watch: {
     $route() {
       // 监听整个route路由对象
@@ -232,6 +261,27 @@ export default {
     delAttr(index) {
       this.searchOptons.props.splice(index, 1);
       this.getSearchGoodsList();
+    },
+
+    // 排序 搜索
+    setOrder(newOrderType) {
+      // 排序类型： 1：综合排序 ， 2：价格
+      let [oldOrderType, oldOrderFlag] = this.orderStr;
+      /**
+       * 控制箭头是升序状态还是降序状态
+       * - 点击相同元素，则取反
+       * - 点击不同元素，默认取desc
+       * **/
+      if (newOrderType === oldOrderType) {
+        // 点击相同元素
+        // 如果原来的是asc，则改为desc，
+        oldOrderFlag = oldOrderFlag === 'asc' ? 'desc' : 'asc';
+      } else {
+        // 点击不同元素
+        oldOrderFlag = 'desc';
+      }
+      this.searchOptons.order = `${newOrderType}:${oldOrderFlag}`;
+      this.getSearchGoodsList(); //刷新页面
     },
   },
 };

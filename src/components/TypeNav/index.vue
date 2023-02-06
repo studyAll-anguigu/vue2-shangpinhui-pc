@@ -124,7 +124,8 @@ export default {
         queryStr.keyword = keyword;
       }
 
-      this.$router.push({
+      // history : 针对重复进入同一个路径下，不要报navigationDuplicated: Avoided redundant navigation to current location: "xxx'
+      this.$router.history.push({
         name: 'Search',
         query: queryStr,
       });

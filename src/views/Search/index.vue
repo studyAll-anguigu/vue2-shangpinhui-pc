@@ -24,6 +24,7 @@
           :attrsList="attrsList"
           :trademarkList="trademarkList"
           @serchtrademark="serchtrademark"
+          @serchAttr="serchAttr"
         />
 
         <!--商品展示区-->
@@ -164,10 +165,19 @@ export default {
 
     // 按照品牌搜素商品列表
     serchtrademark(trademarkStr) {
+      // 判断当前品牌是否跟已存在的品牌相同，同，则不要重新发送请求
+      if (this.searchOptons.trademark === trademarkStr) return;
       // 更新searchOptons信息，只要数据一边，触发watch，就出发搜索请求
       this.searchOptons.trademark = trademarkStr;
       this.getSearchGoodsList();
-      console.log('品牌搜索参数：', typeof trademarkStr);
+    },
+
+    // 根据商品属性搜索
+    serchAttr(props) {
+      // 判断是否已经存在这个属性
+      if (this.searchOptons.props.includes(props)) return;
+      this.searchOptons.props.push(props);
+      this.getSearchGoodsList();
     },
   },
 };

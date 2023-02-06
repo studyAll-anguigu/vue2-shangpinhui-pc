@@ -12,10 +12,35 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类栏目 -->
+            <li
+              class="with-x"
+              @click="delCatagory"
+              v-if="$route.query.categoryName"
+            >
+              分类：{{ $route.query.categoryName }}<i>×</i>
+            </li>
+            <!-- 关键字 -->
+            <li class="with-x" v-if="$route.query.keyword" @click="delKeyword">
+              关键字：{{ $route.query.keyword }}<i>×</i>
+            </li>
+            <!-- 品牌 -->
+            <li
+              class="with-x"
+              v-if="this.searchOptons.trademark"
+              @click="delTrademark"
+            >
+              品牌：{{ this.searchOptons.trademark.split(':')[1] }}<i>×</i>
+            </li>
+            <!-- 属性 -->
+            <li
+              class="with-x"
+              v-for="(prop, index) in this.searchOptons.props"
+              :key="prop"
+              @click="delAttr(index)"
+            >
+              属性：{{ prop.split(':')[2] }} - {{ prop.split(':')[1] }}<i>×</i>
+            </li>
           </ul>
         </div>
 
@@ -175,8 +200,37 @@ export default {
     // 根据商品属性搜索
     serchAttr(props) {
       // 判断是否已经存在这个属性
+      console.log(props, this.searchOptons.props);
       if (this.searchOptons.props.includes(props)) return;
       this.searchOptons.props.push(props);
+      this.getSearchGoodsList();
+    },
+
+    // 删除分类
+    delCatagory() {
+      this.$router.history.push({
+        name: 'Search',
+        query: {
+          keyword: this.$route.query.keyword,
+        },
+      });
+    },
+
+    // 删除关键字条件
+    delKeyword() {
+      this.$route.query.keyword = undefined;
+      this.getSearchGoodsList();
+    },
+
+    // 删除品牌
+    delTrademark() {
+      this.searchOptons.trademark = undefined;
+      this.getSearchGoodsList();
+    },
+
+    // 删除属性
+    delAttr(index) {
+      this.searchOptons.props.splice(index, 1);
       this.getSearchGoodsList();
     },
   },

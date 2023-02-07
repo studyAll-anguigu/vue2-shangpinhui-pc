@@ -147,8 +147,8 @@
           </el-pagination> -->
           <Paginaton
             :total="total"
-            :pageSize="searchOptons.pageSize"
-            :currentPage="searchOptons.pageNo"
+            :page-size="searchOptons.pageSize"
+            :current-page="searchOptons.pageNo"
             :pageSizeList="[5, 10, 15, 20, 50, 100]"
             @changeSize="handleSizeChange"
             @changePage="handleCurrentChange"
@@ -281,12 +281,12 @@ export default {
     handleSizeChange(pagesize) {
       this.searchOptons.pageSize = pagesize;
       this.getSearchGoodsList();
-      console.log('改变pagesize', pagesize);
+      // console.log('改变pagesize', pagesize);
     },
     // 改变当前页码
     handleCurrentChange(page) {
       this.searchOptons.pageNo = page;
-      console.log('改变 curentpage ', page);
+      // console.log('search 收到了改变 curentpage ', page);
       this.getSearchGoodsList();
     },
   },

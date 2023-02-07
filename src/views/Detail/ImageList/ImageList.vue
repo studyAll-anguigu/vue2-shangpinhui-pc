@@ -1,8 +1,13 @@
 <template>
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png" />
+      <div class="swiper-slide" v-for="img in skuImageList" :key="img.id">
+        <img
+          :src="img.imgUrl"
+          :class="{
+            active: img.isDefault === '1',
+          }"
+        />
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -13,6 +18,18 @@
 <script>
 export default {
   name: 'ImageList',
+  props: {
+    skuImageList: {
+      type: Array,
+      default: () => [], // 默认一个空数组
+    },
+  },
+  mounted() {},
+  watch: {
+    skuImageList() {
+      console.log('图片列表', this.skuImageList);
+    },
+  },
 };
 </script>
 
@@ -26,7 +43,7 @@ export default {
   .swiper-slide {
     width: 56px;
     height: 56px;
-
+    // margin-right: 20px;
     img {
       width: 100%;
       height: 100%;

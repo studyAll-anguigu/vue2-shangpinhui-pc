@@ -66,7 +66,7 @@
       </select>
     </span>
     <!-- 跳转到某一页 -->
-    <span class="x-pagination__jump">
+    <!-- <span class="x-pagination__jump">
       前往
       <div class="x-input x-pagination__editor is-in-pagination">
         <input
@@ -78,13 +78,16 @@
         />
       </div>
       页
-    </span>
+    </span> -->
 
     <span class="x-pagination__total">共 {{ total }} 条</span>
   </div>
 </template>
 
 <script>
+// 引入防抖函数 ： 防抖，单位事件内，若重新触发事件时，在单位时间内不会触发事件处理，等待规定的单位时间后才会触发。
+import debounce from 'lodash/debounce';
+
 /*  
 总结：
 
@@ -200,11 +203,15 @@ export default {
         this.myCurrentPage = 1;
       },
     },
-    myCurrentPage(currenpage) {
-      // console.log('监听到了currentPage的变化', currenpage);
-      this.myCurrentPage = currenpage;
-      this.$emit('changePage', currenpage);
-    },
+    myCurrentPage: debounce(
+      function (currenpage) {
+        console.log('监听到了currentPage的变化', currenpage);
+        this.myCurrentPage = currenpage;
+        this.$emit('changePage', currenpage);
+      },
+      500,
+      { maxWait: 50000 }
+    ),
   },
   methods: {
     // 上一页

@@ -106,12 +106,17 @@
           <!-- 商品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
+              <li
+                class="yui3-u-1-5"
+                v-for="goods in goodsList"
+                :key="goods.id"
+                @click="toGoodsDetail(goods.id)"
+              >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
-                      ><img :src="goods.defaultImg"
-                    /></a>
+                    <a>
+                      <img :src="goods.defaultImg" />
+                    </a>
                   </div>
                   <div class="price">
                     <strong>
@@ -121,11 +126,10 @@
                   </div>
                   <div class="attr">
                     <a
-                      target="_blank"
-                      href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{ goods.title }}</a
                     >
+                      {{ goods.title }}
+                    </a>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -288,6 +292,15 @@ export default {
       this.searchOptons.pageNo = page;
       // console.log('search 收到了改变 curentpage ', page);
       this.getSearchGoodsList();
+    },
+    // 跳转到详情页
+    toGoodsDetail(skuId) {
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          id: skuId, // 参数的属性名 要与 配置路由时 写 的参数描述一致。
+        },
+      });
     },
   },
 };

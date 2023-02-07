@@ -16,9 +16,15 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom :skuDefaultImg="skuInfo.skuDefaultImg" />
+          <Zoom
+            :skuDefaultImg="skuInfo.skuDefaultImg"
+            :skuImageList="skuImageList"
+          />
           <!-- 小图列表 -->
-          <ImageList :skuImageList="skuImageList" />
+          <ImageList
+            :skuImageList="skuImageList"
+            @changeDefalutImg="changeDefalutImg"
+          />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -368,6 +374,33 @@ export default {
       this.spuSaleAttrList = res.spuSaleAttrList;
       this.skuImageList = res.skuInfo.skuImageList;
       console.log('商品详细信息：', res);
+    },
+
+    // 改变图片是否时默认图片
+    changeDefalutImg(data) {
+      const { id } = data;
+      // 先排他法，所有变为0
+      this.skuImageList.forEach((img) => {
+        img.isDefault = '0';
+        return img;
+      });
+      // 再把当前的需要修改的那张图片
+      this.skuImageList.forEach((img) => {
+        if (img.id !== id) return img;
+        img.isDefault = '1';
+        // 同步大图
+        this.skuInfo.skuDefaultImg = img.imgUrl;
+        return img;
+      });
+      console.log('changeDefalutImg事件 ', data);
+    },
+  },
+  watch: {
+    skuImageList: {
+      handler(newskuImageList) {
+        console.log('Deatail-index :', newskuImageList);
+      },
+      deep: true,
     },
   },
 };

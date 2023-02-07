@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img :src="skuDefaultImg" />
+    <img :src="defaultImg" />
     <div class="event"></div>
     <div class="big">
-      <img :src="skuDefaultImg" />
+      <img :src="defaultImg" />
     </div>
     <div class="mask"></div>
   </div>
@@ -15,6 +15,21 @@ export default {
   props: {
     skuDefaultImg: {
       type: String,
+    },
+    skuImageList: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    defaultImg() {
+      const imgList = this.skuImageList;
+      if (!imgList.length) return this.skuDefaultImg;
+      let img = imgList.find((img) => img.isDefault === '1');
+      return img.imgUrl;
     },
   },
 };

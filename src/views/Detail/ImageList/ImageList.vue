@@ -7,6 +7,7 @@
           :class="{
             active: img.isDefault === '1',
           }"
+          @mouseenter="changeIsDefalut(img, img.id)"
         />
       </div>
     </div>
@@ -28,6 +29,12 @@ export default {
   watch: {
     skuImageList() {
       console.log('图片列表', this.skuImageList);
+    },
+  },
+  methods: {
+    changeIsDefalut(img, id) {
+      let str = img.isDefault === '1' ? '0' : '1';
+      this.$emit('changeDefalutImg', { str, id });
     },
   },
 };

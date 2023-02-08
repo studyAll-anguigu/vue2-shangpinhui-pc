@@ -16,14 +16,10 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom
-            :skuDefaultImg="skuInfo.skuDefaultImg"
-            :skuImageList="skuImageList"
-            :currenImgIndex="currenImgIndex"
-          />
+          <Zoom :imge="skuInfo.skuImageList[currenImgIndex]" />
           <!-- 小图列表 -->
           <ImageList
-            :skuImageList="skuImageList"
+            :skuImageList="skuInfo.skuImageList"
             :currenImgIndex="currenImgIndex"
             @setCurrenImgIndex="setCurrenImgIndex"
           />
@@ -359,9 +355,10 @@ export default {
   data() {
     return {
       categoryView: {}, // 分类导航
-      skuInfo: {}, // 商品信息
+      skuInfo: {
+        skuImageList: [],
+      }, // 商品信息
       spuSaleAttrList: [], // 销售属性列表
-      skuImageList: [], // 商品图片列表
       currenImgIndex: 0, // 当前选中的图片索引
     };
   },

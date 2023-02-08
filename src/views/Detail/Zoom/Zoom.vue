@@ -1,10 +1,10 @@
 <template>
   <div class="spec-preview" @mousemove="handelMouseMove">
-    <img :src="defaultImg" />
+    <img :src="imge.imgUrl" />
     <div class="event"></div>
     <div class="big">
       <img
-        :src="defaultImg"
+        :src="imge.imgUrl"
         :style="{
           left: -2 * left + 'px',
           top: -2 * top + 'px',
@@ -26,16 +26,10 @@
 export default {
   name: 'XZoom',
   props: {
-    skuDefaultImg: {
-      type: String,
-    },
-    skuImageList: {
-      type: Array,
-      default: () => [],
-    },
-    currenImgIndex: {
-      type: Number,
+    imge: {
+      type: Object,
       required: true,
+      default: () => ({}),
     },
   },
   data() {
@@ -44,16 +38,7 @@ export default {
       top: 0,
     };
   },
-  computed: {
-    defaultImg() {
-      const imgList = this.skuImageList;
-      // 如果没有图片列表，则展示默认图片
-      if (!imgList.length) return this.skuDefaultImg;
-      // 否则，动态展示当前小图列表中选中的图片
-      let img = imgList[this.currenImgIndex];
-      return img.imgUrl;
-    },
-  },
+
   methods: {
     handelMouseMove(e) {
       /**

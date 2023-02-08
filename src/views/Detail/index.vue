@@ -96,11 +96,28 @@
               </dl>
             </div>
             <div class="cartWrap">
-              <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
-              </div>
+              <!--
+                 <InputNumber
+                :min="shopingInfo.min"
+                :max="shopingInfo.max"
+                :value="shopingInfo.skuNum"
+                @input="handleInput"
+              >
+            </InputNumber> 
+            
+            注：可以给组件使用v-model双向绑定数据。
+            v-model的原理：
+            1、普通的输入框 ： v-model绑定的是 value属性  和input 事件
+            2、单选、复选框 ： v-model绑定时checked属性 和 change事件
+            3、下拉列表     ： v-model绑定的是value属性和 change事件
+            4、 给组件绑定  ：必须时 v-model绑定时 value属性 和input事件
+           
+            -->
+              <InputNumber
+                :min="shopingInfo.min"
+                :max="shopingInfo.max"
+                v-model="shopingInfo.skuNum"
+              ></InputNumber>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
               </div>
@@ -345,12 +362,14 @@ import { reqGetGoodsDetail } from '@/api/detail';
 import ImageList from './ImageList/ImageList';
 import Zoom from './Zoom/Zoom';
 import TypeNav from '@/components/TypeNav';
+import InputNumber from '@/components/InputNumber';
 export default {
   name: 'XDetail',
   components: {
     ImageList,
     Zoom,
     TypeNav,
+    InputNumber,
   },
   data() {
     return {
@@ -360,6 +379,11 @@ export default {
       }, // 商品信息
       spuSaleAttrList: [], // 销售属性列表
       currenImgIndex: 0, // 当前选中的图片索引
+      shopingInfo: {
+        skuNum: 100, // 商品库存  以后这个数据一般是后台传回来的
+        min: 1, // 购买商品数量的最小值
+        max: 10, // 购买商品数量的最大值
+      },
     };
   },
   async mounted() {
@@ -555,46 +579,8 @@ export default {
           }
 
           .cartWrap {
-            .controls {
-              width: 48px;
-              position: relative;
-              float: left;
-              margin-right: 15px;
-
-              .itxt {
-                width: 38px;
-                height: 37px;
-                border: 1px solid #ddd;
-                color: #555;
-                float: left;
-                border-right: 0;
-                text-align: center;
-              }
-
-              .plus,
-              .mins {
-                width: 15px;
-                text-align: center;
-                height: 17px;
-                line-height: 17px;
-                background: #f1f1f1;
-                color: #666;
-                position: absolute;
-                right: -8px;
-                border: 1px solid #ccc;
-              }
-
-              .mins {
-                right: -8px;
-                top: 19px;
-                border-top: 0;
-              }
-
-              .plus {
-                right: -8px;
-              }
-            }
-
+            display: flex;
+            align-items: center;
             .add {
               float: left;
 

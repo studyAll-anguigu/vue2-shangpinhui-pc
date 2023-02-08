@@ -48,4 +48,12 @@ export default new VueRouter({
       redirect: '/home',
     },
   ],
+  scrollBehavior() {
+    // return 期望滚动到哪个的位置
+    return {
+      x: 0,
+      y: 0,
+      behavior: 'smooth', // 平滑效果
+    };
+  },
 });

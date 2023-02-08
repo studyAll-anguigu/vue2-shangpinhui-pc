@@ -50,7 +50,7 @@ export default {
           },
           slidesPerView: 5, // 一页显示5张轮播图片
           slidesPerGroup: 1, // 每次滚动时，滚动一张图片
-          spaceBetween: 10,
+          spaceBetween: 10, // 每张空格间隙
         });
       });
     },

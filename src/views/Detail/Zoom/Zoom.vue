@@ -20,6 +20,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    currenImgIndex: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {};
@@ -27,8 +31,10 @@ export default {
   computed: {
     defaultImg() {
       const imgList = this.skuImageList;
+      // 如果没有图片列表，则展示默认图片
       if (!imgList.length) return this.skuDefaultImg;
-      let img = imgList[0];
+      // 否则，动态展示当前小图列表中选中的图片
+      let img = imgList[this.currenImgIndex];
       return img.imgUrl;
     },
   },

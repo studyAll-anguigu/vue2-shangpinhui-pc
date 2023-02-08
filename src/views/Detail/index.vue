@@ -19,12 +19,13 @@
           <Zoom
             :skuDefaultImg="skuInfo.skuDefaultImg"
             :skuImageList="skuImageList"
+            :currenImgIndex="currenImgIndex"
           />
           <!-- 小图列表 -->
           <ImageList
             :skuImageList="skuImageList"
-            @setCurrenImgIndex="setCurrenImgIndex"
             :currenImgIndex="currenImgIndex"
+            @setCurrenImgIndex="setCurrenImgIndex"
           />
         </div>
         <!-- 右侧选择区域布局 -->

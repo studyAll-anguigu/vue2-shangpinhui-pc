@@ -23,7 +23,8 @@
           <!-- 小图列表 -->
           <ImageList
             :skuImageList="skuImageList"
-            @changeDefalutImg="changeDefalutImg"
+            @setCurrenImgIndex="setCurrenImgIndex"
+            :currenImgIndex="currenImgIndex"
           />
         </div>
         <!-- 右侧选择区域布局 -->
@@ -360,6 +361,7 @@ export default {
       skuInfo: {}, // 商品信息
       spuSaleAttrList: [], // 销售属性列表
       skuImageList: [], // 商品图片列表
+      currenImgIndex: 0, // 当前选中的图片索引
     };
   },
   async mounted() {
@@ -377,22 +379,8 @@ export default {
     },
 
     // 改变图片是否时默认图片
-    changeDefalutImg(data) {
-      const { id } = data;
-      // 先排他法，所有变为0
-      this.skuImageList.forEach((img) => {
-        img.isDefault = '0';
-        return img;
-      });
-      // 再把当前的需要修改的那张图片
-      this.skuImageList.forEach((img) => {
-        if (img.id !== id) return img;
-        img.isDefault = '1';
-        // 同步大图
-        this.skuInfo.skuDefaultImg = img.imgUrl;
-        return img;
-      });
-      console.log('changeDefalutImg事件 ', data);
+    setCurrenImgIndex(index) {
+      this.currenImgIndex = index;
     },
   },
   watch: {

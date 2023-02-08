@@ -28,7 +28,7 @@ export default {
     defaultImg() {
       const imgList = this.skuImageList;
       if (!imgList.length) return this.skuDefaultImg;
-      let img = imgList.find((img) => img.isDefault === '1');
+      let img = imgList[0];
       return img.imgUrl;
     },
   },

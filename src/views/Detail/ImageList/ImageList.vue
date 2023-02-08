@@ -1,13 +1,17 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper" ref="swiperEl">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" v-for="img in skuImageList" :key="img.id">
+      <div
+        class="swiper-slide"
+        v-for="(img, index) in skuImageList"
+        :key="img.id"
+      >
         <img
           :src="img.imgUrl"
           :class="{
-            active: img.isDefault === '1',
+            active: currenImgIndex === index,
           }"
-          @mouseenter="changeIsDefalut(img, img.id)"
+          @mouseenter="setCurrenImgIndex(index)"
         />
       </div>
     </div>
@@ -17,6 +21,9 @@
 </template>
 
 <script>
+import Swiper, { Navigation } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
 export default {
   name: 'ImageList',
   props: {
@@ -24,24 +31,40 @@ export default {
       type: Array,
       default: () => [], // 默认一个空数组
     },
+    currenImgIndex: {
+      type: Number,
+      required: true,
+    },
   },
   mounted() {},
   watch: {
     skuImageList() {
-      console.log('图片列表', this.skuImageList);
+      this.$nextTick(() => {
+        console.log('图片列表', this.skuImageList);
+        new Swiper(this.$refs.swiperEl, {
+          modules: [Navigation],
+          // 左右箭头
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          slidesPerView: 5, // 一页显示5张轮播图片
+          slidesPerGroup: 1, // 每次滚动时，滚动一张图片
+          spaceBetween: 10,
+        });
+      });
     },
   },
   methods: {
-    changeIsDefalut(img, id) {
-      let str = img.isDefault === '1' ? '0' : '1';
-      this.$emit('changeDefalutImg', { str, id });
+    setCurrenImgIndex(index) {
+      this.$emit('setCurrenImgIndex', index);
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.swiper-container {
+.swiper {
   height: 56px;
   width: 412px;
   box-sizing: border-box;

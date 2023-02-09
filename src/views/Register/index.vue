@@ -32,7 +32,7 @@
           >
             <label>验证码:</label>
             <input type="text" placeholder="请输入验证码" v-model="code" />
-            <button class="getcode">获取验证码</button>
+            <button class="getcode" @click="getCode">获取验证码</button>
             <span class="error-msg">{{ errors[0] }}</span>
           </ValidationProvider>
           <ValidationProvider
@@ -190,6 +190,27 @@ export default {
     };
   },
   methods: {
+    // 点击获取验证码
+    getCode(e) {
+      let butonNode = e.target;
+      let text = 'n秒后重新发送验证码';
+      let time = 5;
+      let timer = null;
+
+      butonNode.disabled = true; // 禁止按钮点击
+      timer = setInterval(() => {
+        text = `${time}s后重新发送验证码`;
+        time--;
+        if (time < 0) {
+          text = '发送验证码';
+          butonNode.disabled = false;
+          clearInterval(timer);
+        }
+        butonNode.innerText = text;
+      }, 1000);
+    },
+
+    // 表单验证成功后执行的处理函数。
     onSubmit() {
       alert('Form has been submitted!');
     },
@@ -298,6 +319,9 @@ export default {
       height: 38px;
       margin-left: 10px;
       padding: 5px;
+      &:disabled {
+        color: #ccc;
+      }
     }
   }
 

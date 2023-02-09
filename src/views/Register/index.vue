@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import { reqGetCode, reqRegister } from '@/api/user';
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 
@@ -191,7 +192,7 @@ export default {
   },
   methods: {
     // 点击获取验证码
-    getCode(e) {
+    async getCode(e) {
       let butonNode = e.target;
       let text = 'n秒后重新发送验证码';
       let time = 5;
@@ -208,11 +209,22 @@ export default {
         }
         butonNode.innerText = text;
       }, 1000);
+
+      // 发送验证请求
+      const res = await reqGetCode(this.phone);
+      console.log('验证码数据：', res);
     },
 
     // 表单验证成功后执行的处理函数。
-    onSubmit() {
-      alert('Form has been submitted!');
+    async onSubmit() {
+      const res = await reqRegister(this.phone, this.password, this.code);
+      if (!res) {
+        alert('注册成功，立即登录');
+        this.$router.push({
+          name: 'Login',
+        });
+      }
+      // console.log('注册情况：', res);
     },
   },
 };

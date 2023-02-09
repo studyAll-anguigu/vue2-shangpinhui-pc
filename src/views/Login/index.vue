@@ -5,16 +5,26 @@
       <div class="login">
         <div class="loginform">
           <div class="content">
-            <form action="##">
+            <form>
               <div class="input-text clearFix">
                 <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" />
+                <input
+                  type="text"
+                  placeholder="邮箱/用户名/手机号"
+                  v-model="phone"
+                />
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" />
+                <input
+                  type="text"
+                  placeholder="请输入密码"
+                  v-model="password"
+                />
               </div>
-              <button class="btn">登&nbsp;&nbsp;录</button>
+              <button class="btn" @click.prevent="login">
+                登&nbsp;&nbsp;录
+              </button>
             </form>
             <div class="call clearFix">
               <router-link class="register" to="/register"
@@ -44,8 +54,24 @@
 </template>
 
 <script>
+import { reqUserLogin } from '@/api/user';
 export default {
   name: 'XLogin',
+  data() {
+    return {
+      phone: '',
+      password: '',
+    };
+  },
+  methods: {
+    async login() {
+      const res = await reqUserLogin(this.phone, this.password);
+      if (res) alert('验证通过,是否进入首页');
+      this.$router.push({
+        name: 'Home',
+      });
+    },
+  },
 };
 </script>
 

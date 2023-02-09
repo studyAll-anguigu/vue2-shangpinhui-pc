@@ -1,16 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// 引入数据持久化
-import createPersistedState from 'vuex-persistedstate';
+// 导入vuex持久化的插件
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
+  strict: true,
   state: {
-    usersInfo: null,
+    userInfo: null,
   },
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-  plugins: [createPersistedState],
+  mutations: {
+    setUerInfo(state, payload) {
+      // payload: 载荷，就是commit调用时，额外传过来的数据
+      state.userInfo = payload;
+    },
+  },
 });
+
+export default store;

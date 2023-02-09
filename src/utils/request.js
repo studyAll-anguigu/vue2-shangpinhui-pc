@@ -41,9 +41,12 @@ const errObj = {
 // 请求拦截器
 request.interceptors.request.use(
   // 第一个参数：请求成功时的处理回调。
-  // 参数： config，就是请求配置
+  // config 是发送请求的配置项
+  // 作用：用来添加公共请求参数
+  // config.headers.token = 'xxxx';
+
   (config) => {
-    // console.log('config:', config);
+    console.log('清流拦截器config对象：:', config);
     NProgress.start(); // 开始进度条
     return config; // 必须返回config
   },

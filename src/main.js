@@ -3,7 +3,7 @@ import App from './App.vue';
 
 // 引入路由对象
 import router from './router/index';
-import store from './store';
+import store from './store/index.js';
 // 引入重置默认样式
 import './styles/normalize.css';
 

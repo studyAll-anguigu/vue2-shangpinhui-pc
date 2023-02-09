@@ -38,6 +38,12 @@ export default {
   async mounted() {
     const data = await reqGetHomeFloors();
     this.floorsData = data;
+
+    console.log(
+      'locastore中的 用户信息：',
+      JSON.parse(localStorage.getItem('userInfo'))
+    );
+    console.log('$store 中的 用户信息：', this.$store.state.userInfo);
   },
 };
 </script>

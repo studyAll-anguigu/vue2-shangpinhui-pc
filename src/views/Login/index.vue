@@ -66,7 +66,25 @@ export default {
   methods: {
     async login() {
       const res = await reqUserLogin(this.phone, this.password);
-      if (res) alert('验证通过,是否进入首页');
+      console.log('用户登录信息', res);
+      /**
+       * 成功的话，res返回以下数据：
+       * name: "13733333333"
+       * nickName: "13733333333"
+       * token: "283e943f396242ad9272f0c08536e1c0"
+       * userId: 326
+       * **/
+      if (res) {
+        // 需要保存用户信息
+        const userInfo = {
+          token: res.token,
+          nickName: res.nickName,
+        };
+        localStorage.setItem('userInfo', JSON.stringify(userInfo)); // 存储再localStoreage
+        // this.$store.state.userInfo = res; // 不建议直接修改stoe数据，mutaions是修改state数据的唯一途径
+        this.$store.commit('setUerInfo', res); // 修改vuex中的state状态，调用mutation的方法。
+        alert('验证通过,是否进入首页');
+      }
       this.$router.push({
         name: 'Home',
       });

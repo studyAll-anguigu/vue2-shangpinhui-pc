@@ -4,13 +4,14 @@
       <div class="header-top-main">
         <div class="header-top-left">
           尚品汇欢迎您！
-          <span v-if="!$store.state.usersInfo?.token"
+
+          <span v-if="!$store.state.user.token"
             >请 <router-link to="/login">登录</router-link> |
             <router-link to="/register">免费注册</router-link>
           </span>
           <span v-else>
-            {{ $store.state.usersInfo.nickName }}
-            <button @click="logout">退出</button>
+            {{ $store.state.user.nickName }}
+            <button @click="logout">退出登录</button>
           </span>
         </div>
         <div class="header-nav">
@@ -59,9 +60,9 @@ export default {
       });
     },
     // 退出登录
-    logout() {
-      console.log('退出');
-      this.$router.push({
+    async logout() {
+      await this.$store.dispatch('user/logout');
+      this.$router.history.push({
         name: 'Login',
       });
     },

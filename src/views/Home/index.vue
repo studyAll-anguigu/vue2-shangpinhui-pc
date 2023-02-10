@@ -38,8 +38,6 @@ export default {
   async mounted() {
     const data = await reqGetHomeFloors();
     this.floorsData = data;
-
-    console.log('vuex中的数据：', this.$store);
   },
 };
 </script>

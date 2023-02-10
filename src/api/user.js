@@ -32,3 +32,11 @@ export const reqGetCode = (phone) => {
     url: `/user/passport/sendCode/${phone}`,
   });
 };
+
+// 退出登录
+export const reqLogout = () => {
+  return request({
+    method: 'get',
+    url: '/user/passport/logout',
+  });
+};

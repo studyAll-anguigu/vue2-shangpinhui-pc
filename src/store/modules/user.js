@@ -14,7 +14,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { reqUserLogin } from '@/api/user';
+import { reqUserLogin, reqLogout } from '@/api/user';
 
 Vue.use(Vuex);
 
@@ -35,6 +35,13 @@ export default {
       // 数据持久化
       localStorage.setItem('userInfo', JSON.stringify(user));
     },
+    LOGOUT(state) {
+      // 清空state
+      state.token = '';
+      state.nickName = '';
+      // 删除本地缓存的数据
+      localStorage.removeItem('userInfo');
+    },
   },
   actions: {
     // 登录
@@ -42,6 +49,10 @@ export default {
       const res = await reqUserLogin(user.phone, user.password);
       // 提交mutaion
       context.commit('LOGIN', res);
+    },
+    async logout(context) {
+      await reqLogout();
+      context.commit('LOGOUT');
     },
   },
 };

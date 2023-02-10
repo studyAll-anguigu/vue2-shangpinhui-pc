@@ -15,10 +15,9 @@
 
         error.response 有值，说明服务器有响应，响应结果是失败的
         error.response 没有值，说明请求在客户端就中断了（服务器没有返回响应），结果失败
-   
-
 */
 import axios from 'axios';
+import store from '@/store';
 // 引入进度条
 import NProgress from 'nprogress';
 // 关闭进度条加载圈
@@ -46,6 +45,11 @@ request.interceptors.request.use(
   // config.headers.token = 'xxxx';
 
   (config) => {
+    // 添加公共请求参数，每次需要请求时都携带tiken
+    const token = store.state.user.token;
+    if (token) {
+      config.headers.token = store.state.user.token;
+    }
     NProgress.start(); // 开始进度条
     return config; // 必须返回config
   },
@@ -58,7 +62,6 @@ request.interceptors.response.use(
   //第1个参数：响应成功时的处理 。  2xx 范围内的状态码都会触发该函数。
   // 只有功能状态code=200时，才返回成功的状态，否则就返回失败的状态
   (response) => {
-    // console.log('respone:', response);
     NProgress.done(); // 结束进度条
     if (response.data.code === 200) {
       return response.data.data;

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// 导入vuex持久化的插件
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

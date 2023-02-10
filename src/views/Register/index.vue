@@ -32,7 +32,13 @@
           >
             <label>验证码:</label>
             <input type="text" placeholder="请输入验证码" v-model="code" />
-            <button class="getcode" @click="getCode">获取验证码</button>
+            <button
+              class="getcode"
+              @click.prevent="getCode"
+              :disabled="isShowGetcode"
+            >
+              {{ time < 61 ? `${time} s后重新获取验证码` : '获取验证码' }}
+            </button>
             <span class="error-msg">{{ errors[0] }}</span>
           </ValidationProvider>
           <ValidationProvider
@@ -108,6 +114,12 @@
 import { reqGetCode, reqRegister } from '@/api/user';
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
+// 手机号正则
+const phoneReg =
+  /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
+
+// 验证码正则
+const codeReg = /^[0-9]{6}$/;
 
 // 校验phone是否有值
 // 写法一： 不要修改默认的错误提示文本
@@ -121,8 +133,6 @@ extend('phoneRequired', {
 // 校验手机号是否符合规范
 extend('phone', {
   validate: (val) => {
-    const phoneReg =
-      /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
     return phoneReg.test(val);
   },
   message: '请输入正确的手机号',
@@ -135,7 +145,6 @@ extend('codeRequired', {
 });
 extend('code', {
   validate: (val) => {
-    const codeReg = /^[0-9]{6}$/;
     return codeReg.test(val);
   },
   message: '请输入正确的验证码',
@@ -188,31 +197,36 @@ export default {
       password: '',
       repassword: '',
       isAgree: false,
+      time: 61,
     };
+  },
+  computed: {
+    isShowGetcode() {
+      // 如果没有手机号(手机号验证不通过) 或者 正在倒计时 时，禁用获取验证码按钮
+      return !phoneReg.test(this.phone) || this.time < 5;
+    },
   },
   methods: {
     // 点击获取验证码
     async getCode(e) {
       let butonNode = e.target;
-      let text = 'n秒后重新发送验证码';
-      let time = 5;
-      let timer = null;
+      // let text = 'n秒后重新发送验证码';
+      this.timerId = null;
 
       butonNode.disabled = true; // 禁止按钮点击
-      timer = setInterval(() => {
-        text = `${time}s后重新发送验证码`;
-        time--;
-        if (time < 0) {
-          text = '发送验证码';
+      this.time--; // 让它一点击按钮就减1 ，解决看起来慢了异步才开始发送的现象
+      this.timerId = setInterval(() => {
+        this.time--;
+        if (this.time < 0) {
+          this.time = 61;
           butonNode.disabled = false;
-          clearInterval(timer);
+          clearInterval(this.timerId);
         }
-        butonNode.innerText = text;
       }, 1000);
 
       // 发送验证请求
-      const res = await reqGetCode(this.phone);
-      console.log('验证码数据：', res);
+      const code = await reqGetCode(this.phone);
+      console.log('验证码：', code);
     },
 
     // 表单验证成功后执行的处理函数。
@@ -224,8 +238,11 @@ export default {
           name: 'Login',
         });
       }
-      // console.log('注册情况：', res);
     },
+  },
+
+  beforeDestroy() {
+    clearInterval(this.timerId);
   },
 };
 </script>

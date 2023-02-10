@@ -77,7 +77,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import { reqUserLogin } from '@/api/user';
+// import { reqUserLogin } from '@/api/user';
 // 引入相关的校验规则
 import '@/utils/commonRules';
 
@@ -92,25 +92,13 @@ export default {
   },
   methods: {
     async login() {
-      const res = await reqUserLogin(this.phone, this.password);
-      console.log('用户登录信息', res);
-      /**
-       * 成功的话，res返回以下数据：
-       * name: "13733333333"
-       * nickName: "13733333333"
-       * token: "283e943f396242ad9272f0c08536e1c0"
-       * userId: 326
-       * **/
-      // 需要保存用户信息
-      if (res) {
-        const userInfo = {
-          token: res.token,
-          nickName: res.nickName,
-        };
-        localStorage.setItem('userInfo', JSON.stringify(userInfo)); // 存储再localStoreage
-        // this.$store.state.userInfo = res; // 不建议直接修改stoe数据，mutaions是修改state数据的唯一途径
-        this.$store.commit('setUerInfo', res); // 修改vuex中的state状态，调用mutation的方法。
-      }
+      // 因为user模块的，调用其他模块的action，前面需要加模块名
+      // 按规范写，一般遵守一个原则就是，数据在哪里，就在哪里修改。
+      // 所以修改vuex数据，就去到vuex修改。
+      await this.$store.dispatch('user/login', {
+        phone: this.phone,
+        password: this.password,
+      });
       this.$router.push({
         name: 'Home',
       });

@@ -46,7 +46,6 @@ request.interceptors.request.use(
   // config.headers.token = 'xxxx';
 
   (config) => {
-    console.log('清流拦截器config对象：:', config);
     NProgress.start(); // 开始进度条
     return config; // 必须返回config
   },

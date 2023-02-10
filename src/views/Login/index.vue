@@ -5,27 +5,49 @@
       <div class="login">
         <div class="loginform">
           <div class="content">
-            <form>
-              <div class="input-text clearFix">
-                <span></span>
-                <input
-                  type="text"
-                  placeholder="邮箱/用户名/手机号"
-                  v-model="phone"
-                />
-              </div>
-              <div class="input-text clearFix">
-                <span class="pwd"></span>
-                <input
-                  type="text"
-                  placeholder="请输入密码"
-                  v-model="password"
-                />
-              </div>
-              <button class="btn" @click.prevent="login">
-                登&nbsp;&nbsp;录
-              </button>
-            </form>
+            <ValidationObserver v-slot="{ handleSubmit }">
+              <form
+                @submit.prevent="
+                  {
+                    handleSubmit(login);
+                  }
+                "
+              >
+                <ValidationProvider
+                  class="input-text clearFix"
+                  name="phone"
+                  tag="div"
+                  mode="lazy"
+                  rules="phoneRequied|phone"
+                  v-slot="{ errors }"
+                >
+                  <span></span>
+                  <input
+                    type="text"
+                    placeholder="邮箱/用户名/手机号"
+                    v-model="phone"
+                  />
+                  <i style="color: red">{{ errors[0] }}</i>
+                </ValidationProvider>
+                <ValidationProvider
+                  class="input-text clearFix"
+                  name="password"
+                  tag="div"
+                  mode="lazy"
+                  rules="passwordRequired|password"
+                  v-slot="{ errors }"
+                >
+                  <span class="pwd"></span>
+                  <input
+                    type="text"
+                    placeholder="请输入密码"
+                    v-model="password"
+                  />
+                  <i style="color: red">{{ errors[0] }}</i>
+                </ValidationProvider>
+                <button class="btn">登&nbsp;&nbsp;录</button>
+              </form>
+            </ValidationObserver>
             <div class="call clearFix">
               <router-link class="register" to="/register"
                 >立即注册</router-link
@@ -54,9 +76,38 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import { reqUserLogin } from '@/api/user';
+// 手机号正则
+const phoneReg =
+  /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
+
+const paswordReg = /^[0-9A-Za-z]{6,18}$/;
+
+extend('phoneRequied', {
+  ...required,
+  message: ' 请输入手机号',
+});
+extend('password', {
+  validate(val) {
+    return phoneReg.test(val);
+  },
+  message: '手机号不正确',
+});
+
+extend('passwordRequired', {
+  ...required,
+  message: '请输入密码',
+});
+extend('password', {
+  validate: (val) => paswordReg.test(val),
+  message: '密码不符合规范',
+});
+
 export default {
   name: 'XLogin',
+  components: { ValidationObserver, ValidationProvider },
   data() {
     return {
       phone: '',
@@ -74,8 +125,8 @@ export default {
        * token: "283e943f396242ad9272f0c08536e1c0"
        * userId: 326
        * **/
+      // 需要保存用户信息
       if (res) {
-        // 需要保存用户信息
         const userInfo = {
           token: res.token,
           nickName: res.nickName,
@@ -83,7 +134,6 @@ export default {
         localStorage.setItem('userInfo', JSON.stringify(userInfo)); // 存储再localStoreage
         // this.$store.state.userInfo = res; // 不建议直接修改stoe数据，mutaions是修改state数据的唯一途径
         this.$store.commit('setUerInfo', res); // 修改vuex中的state状态，调用mutation的方法。
-        alert('验证通过,是否进入首页');
       }
       this.$router.push({
         name: 'Home',

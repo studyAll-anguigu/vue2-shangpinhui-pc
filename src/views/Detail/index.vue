@@ -381,7 +381,7 @@ export default {
       spuSaleAttrList: [], // 销售属性列表
       currenImgIndex: 0, // 当前选中的图片索引
       shopingInfo: {
-        skuNum: 100, // 商品库存  以后这个数据一般是后台传回来的
+        skuNum: 1, // 商品库存  以后这个数据一般是后台传回来的
         min: 1, // 购买商品数量的最小值
         max: 10, // 购买商品数量的最大值
       },
@@ -409,7 +409,13 @@ export default {
     async addTocart() {
       // 调用addToCart接口
       await addToCart(this.skuInfo.id, this.shopingInfo.skuNum);
-      this.$router.push('/addcartsuccess');
+      this.$router.push({
+        name: 'AddCartSuccess',
+        query: {
+          skuId: this.skuInfo.id,
+          skuNum: this.shopingInfo.skuNum,
+        },
+      });
     },
   },
   watch: {

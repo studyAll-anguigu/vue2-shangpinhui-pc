@@ -5,17 +5,23 @@
       <div class="goods">
         <div class="left-good">
           <div class="left-pic">
-            <img src="good.skuDefaultImg" />
+            <img :src="skuInfo.skuDefaultImg" />
           </div>
           <div class="right-info">
             <p class="title">
-              小米红米 Redmi note8 手机 梦幻蓝 全网通(4GB+64GB)
+              {{ skuInfo.skuName }}
             </p>
-            <p class="attr">颜色：WFZ5099IH/5L钛金釜内胆 数量：2</p>
+            <p class="attr">数量：{{ skuNum }}</p>
           </div>
         </div>
         <div class="right-gocart">
-          <a href="javascript:" class="sui-btn btn-xlarge">查看商品详情</a>
+          <a
+            class="sui-btn btn-xlarge"
+            @click="
+              $router.push({ name: 'Detail', params: { id: skuInfo.id } })
+            "
+            >查看商品详情</a
+          >
           <a href="javascript:">去购物车结算 > </a>
         </div>
       </div>
@@ -24,8 +30,22 @@
 </template>
 
 <script>
+import { reqGetGoodsDetail } from '@/api/detail';
 export default {
   name: 'AddCartSuccess',
+  data() {
+    return {
+      skuInfo: {},
+      skuNum: 0,
+    };
+  },
+  async mounted() {
+    // 获取商品详情
+    const skuId = this.$route.query.skuId;
+    const res = await reqGetGoodsDetail(skuId);
+    this.skuInfo = res.skuInfo;
+    this.skuNum = this.$route.query.skuNum;
+  },
 };
 </script>
 

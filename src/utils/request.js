@@ -64,7 +64,7 @@ request.interceptors.response.use(
     if (response.data.code === 200) {
       return response.data.data;
     } else {
-      alert(response.message);
+      alert(response.data.message);
       // 这里是必须返回失败的promise对象。因为这里是处理失败时的结果，如果这里不返回失败promise，那么它下面会走成功的处理。
       return Promise.reject(response.data.message);
     }

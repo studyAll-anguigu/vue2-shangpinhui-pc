@@ -6,6 +6,7 @@ import Login from '@/views/Login';
 import Register from '@/views/Register';
 import Search from '@/views/Search';
 import Detail from '@/views/Detail';
+import AddCartSuccess from '@/views/AddCartSuccess';
 
 Vue.use(VueRouter);
 
@@ -42,6 +43,11 @@ export default new VueRouter({
       path: '/detail/:id',
       component: Detail,
       name: 'Detail',
+    },
+    {
+      path: '/addcartsuccess',
+      component: AddCartSuccess,
+      name: 'AddCartSuccess',
     },
     {
       path: '*',

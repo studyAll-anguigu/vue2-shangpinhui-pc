@@ -119,7 +119,7 @@
                 v-model="shopingInfo.skuNum"
               ></InputNumber>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addTocart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -359,6 +359,7 @@
 
 <script>
 import { reqGetGoodsDetail } from '@/api/detail';
+import { addToCart } from '@/api/shopCart';
 import ImageList from './ImageList/ImageList';
 import Zoom from './Zoom/Zoom';
 import TypeNav from '@/components/TypeNav';
@@ -403,6 +404,12 @@ export default {
     // 改变图片是否时默认图片
     setCurrenImgIndex(index) {
       this.currenImgIndex = index;
+    },
+    // 加入购物车
+    async addTocart() {
+      // 调用addToCart接口
+      await addToCart(this.skuInfo.id, this.shopingInfo.skuNum);
+      this.$router.push('/addcartsuccess');
     },
   },
   watch: {

@@ -18,7 +18,7 @@
                   name="phone"
                   tag="div"
                   mode="lazy"
-                  rules="phoneRequied|phone"
+                  rules="phoneRequired|phone"
                   v-slot="{ errors }"
                 >
                   <span></span>
@@ -76,34 +76,10 @@
 </template>
 
 <script>
-import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { reqUserLogin } from '@/api/user';
-// 手机号正则
-const phoneReg =
-  /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
-
-const paswordReg = /^[0-9A-Za-z]{6,18}$/;
-
-extend('phoneRequied', {
-  ...required,
-  message: ' 请输入手机号',
-});
-extend('password', {
-  validate(val) {
-    return phoneReg.test(val);
-  },
-  message: '手机号不正确',
-});
-
-extend('passwordRequired', {
-  ...required,
-  message: '请输入密码',
-});
-extend('password', {
-  validate: (val) => paswordReg.test(val),
-  message: '密码不符合规范',
-});
+// 引入相关的校验规则
+import '@/utils/commonRules';
 
 export default {
   name: 'XLogin',

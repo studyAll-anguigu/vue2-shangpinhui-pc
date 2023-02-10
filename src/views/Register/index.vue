@@ -114,9 +114,9 @@
 import { reqGetCode, reqRegister } from '@/api/user';
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-// 手机号正则
-const phoneReg =
-  /^1((34[0-8])|(8\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\d{1}))\d{7}$/;
+
+// 引入规则
+import { phoneReg } from '@/utils/commonRules';
 
 // 验证码正则
 const codeReg = /^[0-9]{6}$/;
@@ -148,32 +148,6 @@ extend('code', {
     return codeReg.test(val);
   },
   message: '请输入正确的验证码',
-});
-
-// 登录密码
-extend('passwordRequired', {
-  ...required,
-  message: '请输入密码',
-});
-extend('password', {
-  validate: (val) => {
-    const reg = /^[0-9A-Za-z]{6,18}$/;
-    return reg.test(val);
-  },
-  message: '请输入正确的密码',
-});
-
-// 确认密码
-extend('repasswordRequired', {
-  ...required,
-  message: '请输入确认密码',
-});
-extend('repassword', {
-  validate: (val, pw) => {
-    return pw.password === val; // 判断跟密码是否相同
-  },
-  message: '两次输入的密码不一致',
-  params: ['password'], // 生民接受参数
 });
 
 // 勾选协议

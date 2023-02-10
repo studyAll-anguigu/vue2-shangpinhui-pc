@@ -7,6 +7,7 @@ import Register from '@/views/Register';
 import Search from '@/views/Search';
 import Detail from '@/views/Detail';
 import AddCartSuccess from '@/views/AddCartSuccess';
+import ShopCart from '@/views/ShopCart';
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,11 @@ export default new VueRouter({
       path: '/addcartsuccess',
       component: AddCartSuccess,
       name: 'AddCartSuccess',
+    },
+    {
+      path: '/shopcart',
+      component: ShopCart,
+      name: 'ShopCart',
     },
     {
       path: '*',

@@ -20,8 +20,9 @@
             @click="
               $router.push({ name: 'Detail', params: { id: skuInfo.id } })
             "
-            >查看商品详情</a
           >
+            查看商品详情
+          </a>
           <a href="javascript:">去购物车结算 > </a>
         </div>
       </div>

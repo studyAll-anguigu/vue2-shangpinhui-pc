@@ -17,7 +17,7 @@
               type="checkbox"
               name="chk_list"
               :checked="cart.isChecked"
-              @change="updateOnechecked($event, cart.skuId)"
+              @change="upOnechecked($event, cart.skuId)"
             />
           </li>
           <li class="cart-list-con2">
@@ -52,7 +52,12 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" @change="updateAllchecked" />
+        <input
+          class="chooseAll"
+          type="checkbox"
+          @change="updateAllchecked"
+          :checked="isAllChecked"
+        />
         <span>全选</span>
       </div>
       <div class="option">
@@ -73,7 +78,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
   name: 'ShopCart',
   data() {
@@ -83,6 +88,9 @@ export default {
     // 把vuex中shopCart模块下的cartInfoList 数据映射到 当前组件的计算属性中。
     // 在当前组件中可以通过this.cartInfoList 使用数据
     ...mapState('shopCart', ['cartInfoList']),
+
+    // 把vuex中的所有格gegters映射到当前组件
+    ...mapGetters('shopCart', ['isAllChecked']),
   },
   mounted() {
     //方法1、 直接触发vuex中的action    获取购物测列表
@@ -100,13 +108,12 @@ export default {
     ]),
 
     // 单个商品 选 与 取消勾选
-    updateOnechecked(e, skuId) {
+    upOnechecked(e, skuId) {
       this.UpdateOnecheckCart({ skuId, isChecked: e.target.checked });
     },
     // 全选 、  全不选
     updateAllchecked(e) {
       let target = e.target.checked;
-      console.log(typeof target);
       this.UpdateAllcheckCart(target);
     },
   },

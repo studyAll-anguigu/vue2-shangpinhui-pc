@@ -17,3 +17,12 @@ export const reqGetCartList = () => {
     url: '/cart/cartList',
   });
 };
+
+// 切换商品选中状态 ，单个商品切换
+
+export const reqUpdateOnecheckCart = (skuId, isChecked) => {
+  return request({
+    method: 'get',
+    url: `/cart/checkCart/${skuId}/${isChecked}`,
+  });
+};

@@ -13,7 +13,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cart in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cart.isChecked"
+              @change="updateOnechecked($event, cart.skuId)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -88,7 +93,12 @@ export default {
   },
   methods: {
     // 将vuex中的actinn映射到当前组件的methoss中，当前组件通过this.xxxx调用方法
-    ...mapActions('shopCart', ['getCartList']),
+    ...mapActions('shopCart', ['getCartList', 'UpdateOnecheckCart']),
+
+    updateOnechecked(e, skuId) {
+      // console.log('index1111', e.target, skuId);
+      this.UpdateOnecheckCart({ skuId, isChecked: e.target.checked });
+    },
   },
 };
 </script>

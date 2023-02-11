@@ -52,7 +52,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <input class="chooseAll" type="checkbox" @change="updateAllchecked" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -93,11 +93,21 @@ export default {
   },
   methods: {
     // 将vuex中的actinn映射到当前组件的methoss中，当前组件通过this.xxxx调用方法
-    ...mapActions('shopCart', ['getCartList', 'UpdateOnecheckCart']),
+    ...mapActions('shopCart', [
+      'getCartList',
+      'UpdateOnecheckCart',
+      'UpdateAllcheckCart',
+    ]),
 
+    // 单个商品 选 与 取消勾选
     updateOnechecked(e, skuId) {
-      // console.log('index1111', e.target, skuId);
       this.UpdateOnecheckCart({ skuId, isChecked: e.target.checked });
+    },
+    // 全选 、  全不选
+    updateAllchecked(e) {
+      let target = e.target.checked;
+      console.log(typeof target);
+      this.UpdateAllcheckCart(target);
     },
   },
 };

@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { reqGetCartList, reqUpdateOnecheckCart } from '@/api/shopCart';
+import {
+  reqGetCartList,
+  reqUpdateOnecheckCart,
+  reqBatchCheckCart,
+} from '@/api/shopCart';
 
 // 注册vuex
 Vue.use(Vuex);
@@ -41,6 +45,24 @@ export default {
         return cart;
       });
       context.commit('SET_CART_LIST', list);
+    },
+
+    // 批量
+    async UpdateAllcheckCart({ state, commit }, isChecked) {
+      let target = isChecked === false ? 0 : 1;
+      // 获得ID列表
+      let skuIdList = state.cartInfoList.map((item) => {
+        return item.skuId;
+      });
+      let list = state.cartInfoList.map((item) => {
+        item.isChecked = target;
+        return item;
+      });
+      console.log('vuex收到了', isChecked, target);
+      const res = await reqBatchCheckCart(target, skuIdList);
+      console.log(res);
+
+      commit('SET_CART_LIST', list);
     },
   },
 };

@@ -19,10 +19,20 @@ export const reqGetCartList = () => {
 };
 
 // 切换商品选中状态 ，单个商品切换
-
 export const reqUpdateOnecheckCart = (skuId, isChecked) => {
   return request({
     method: 'get',
     url: `/cart/checkCart/${skuId}/${isChecked}`,
+  });
+};
+
+// 批量选中购物车 /  全选与全不选
+// skuIdList  数组  代表修改的商品id列表     请求体参数
+// isChecked  要修改的状态   1代表选中  0代表未选中
+export const reqBatchCheckCart = (isChecked, skuIdList) => {
+  return request({
+    method: 'post',
+    url: `/cart/batchCheckCart/${isChecked}`,
+    data: skuIdList,
   });
 };

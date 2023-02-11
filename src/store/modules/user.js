@@ -29,12 +29,14 @@ export default {
   state: initUserInfo,
   getters: {},
   mutations: {
+    // 登录
     LOGIN(state, user) {
       state.token = user.token;
       state.nickName = user.nickName;
       // 数据持久化
       localStorage.setItem('userInfo', JSON.stringify(user));
     },
+    // 登出
     LOGOUT(state) {
       // 清空state
       state.token = '';

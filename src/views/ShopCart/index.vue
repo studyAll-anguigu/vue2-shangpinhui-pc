@@ -68,20 +68,27 @@
 </template>
 
 <script>
-import { reqGetCartList } from '@/api/shopCart';
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'ShopCart',
   data() {
-    return {
-      cartInfoList: [],
-    };
+    return {};
   },
-  async mounted() {
-    const res = await reqGetCartList();
-    if (res[0]) {
-      this.cartInfoList = res[0].cartInfoList;
-    }
-    console.log(this.cartInfoList);
+  computed: {
+    // 把vuex中shopCart模块下的cartInfoList 数据映射到 当前组件的计算属性中。
+    // 在当前组件中可以通过this.cartInfoList 使用数据
+    ...mapState('shopCart', ['cartInfoList']),
+  },
+  mounted() {
+    //方法1、 直接触发vuex中的action    获取购物测列表
+    // this.$store.dispatch('shopCart/getCartList');
+
+    // 方法2、 调用通过mapActions映射进来的方法取 获取数据 （推荐，最好） 。
+    this.getCartList();
+  },
+  methods: {
+    // 将vuex中的actinn映射到当前组件的methoss中，当前组件通过this.xxxx调用方法
+    ...mapActions('shopCart', ['getCartList']),
   },
 };
 </script>

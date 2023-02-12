@@ -5,6 +5,7 @@ import {
   reqGetCartList,
   reqUpdateOnecheckCart,
   reqBatchCheckCart,
+  reqUpdateSkuNum,
 } from '@/api/shopCart';
 
 // 注册vuex
@@ -69,6 +70,23 @@ export default {
       await reqBatchCheckCart(target, skuIdList);
 
       commit('SET_CART_LIST', list);
+    },
+
+    // 添加到购物车 (改变购物车列表的商品数量, 对已有物品进行数量改动)
+    async updateCartSkuNum(context, data) {
+      const skuId = data.skuId;
+      const value = data.newValue - data.oldValue;
+      // 发送请求
+      await reqUpdateSkuNum(skuId, value);
+      // // 更新state，同步缓存
+      let cartInfoList = context.state.cartInfoList;
+      cartInfoList = cartInfoList.map((item) => {
+        if (item.skuId !== data.skuId) return item;
+        // 更新数量
+        item.skuNum += value;
+        return item;
+      });
+      context.commit('SET_CART_LIST', cartInfoList);
     },
   },
 };

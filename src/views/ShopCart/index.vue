@@ -30,15 +30,20 @@
             <span class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input
-              autocomplete="off"
-              type="text"
-              value="1"
-              minnum="1"
-              class="itxt"
+            <!-- 
+              $event:  这里就是value属性绑定的值
+              变动的值，需要减去原来的skuNum,否则服务器以为增加或减少你传过去的值
+             -->
+            <InputNumber
+              :value="cart.skuNum"
+              @input="
+                updateSkuNum({
+                  skuId: cart.skuId,
+                  newValue: $event,
+                  oldValue: cart.skuNum,
+                })
+              "
             />
-            <a href="javascript:void(0)" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cart.cartPrice }}</span>
@@ -78,12 +83,15 @@
 </template>
 
 <script>
+import InputNumber from '@/components/InputNumber';
 import { mapState, mapActions, mapGetters } from 'vuex';
+import { debounce } from 'lodash';
 export default {
   name: 'ShopCart',
   data() {
     return {};
   },
+  components: { InputNumber },
   computed: {
     // 把vuex中shopCart模块下的cartInfoList 数据映射到 当前组件的计算属性中。
     // 在当前组件中可以通过this.cartInfoList 使用数据
@@ -105,7 +113,13 @@ export default {
       'getCartList',
       'UpdateOnecheckCart',
       'UpdateAllcheckCart',
+      'updateCartSkuNum',
     ]),
+
+    // 防抖优化，只触发最后一次，避免多次连续改变时，改变的值不对
+    updateSkuNum: debounce(function (args) {
+      this.updateCartSkuNum(args);
+    }, 200),
 
     // 单个商品 选 与 取消勾选
     upOnechecked(e, skuId) {

@@ -36,3 +36,12 @@ export const reqBatchCheckCart = (isChecked, skuIdList) => {
     data: skuIdList,
   });
 };
+
+// 添加到购物车(对已有物品进行数量改动)
+
+export const reqUpdateSkuNum = (skuId, skuNum) => {
+  return request({
+    method: 'post',
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+  });
+};

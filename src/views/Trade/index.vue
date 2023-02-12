@@ -44,20 +44,24 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix" v-for="trade in tradeinfo" :key="trade.id">
+        <ul
+          class="list clearFix"
+          v-for="good in tradeinfo.detailArrayList"
+          :key="good.id"
+        >
           <li>
-            <img :src="trade.imgUrl" alt="" class="good-img" />
+            <img :src="good.imgUrl" alt="" class="good-img" />
           </li>
           <li>
             <p>
-              {{ trade.skuName }}
+              {{ good.skuName }}
             </p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥ {{ trade.orderPrice }}</h3>
+            <h3>￥ {{ good.orderPrice }}</h3>
           </li>
-          <li>X {{ trade.skuNum }}</li>
+          <li>X {{ good.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -80,11 +84,11 @@
       <ul>
         <li>
           <b><i>1</i>件商品，总商品金额</b>
-          <span>¥ {{ originalTotalAmount }}</span>
+          <span>¥ {{ tradeinfo.originalTotalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
-          <span>0.00</span>
+          <span> {{ tradeinfo.activityReduceAmount }}</span>
         </li>
         <li>
           <b>运费：</b>
@@ -94,7 +98,7 @@
     </div>
     <div class="trade">
       <div class="price">
-        应付金额: <span>¥ {{ totalAmount }}</span>
+        应付金额: <span>¥ {{ tradeinfo.totalAmount }}</span>
       </div>
       <div class="receiveInfo">
         寄送至:
@@ -104,13 +108,13 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
-import { reqTradeInfo } from '@/api/pay.js';
+import { reqTradeInfo, reqSubmitOrder } from '@/api/pay.js';
 export default {
   name: 'XTrade',
   data() {
@@ -119,14 +123,39 @@ export default {
       totalAmount: 0, //  总价格（优惠后）
       originalTotalAmount: 0, //  总价格(优惠前)
       remark: '', // 买家留言，备注
+      tradeNo: '',
     };
   },
   async mounted() {
-    const res = await reqTradeInfo(1, 3);
-    this.tradeinfo = res.detailArrayList;
-    this.totalAmount = res.totalAmount;
-    this.originalTotalAmount = res.originalTotalAmount;
-    console.log('订单列表', res);
+    // 获取订单信息
+    this.tradeinfo = await reqTradeInfo(1, 3);
+    console.log('订单列表', this.tradeinfo);
+  },
+  methods: {
+    // 提交订单
+    async submitOrder() {
+      const { tradeNo } = this.tradeinfo;
+      let params = {
+        tradeNo,
+        consignee: '羊羊羊',
+        consigneeTel: '15011111111',
+        deliveryAddress: '深圳龙岗杨美',
+        paymentWay: 'ONLINE', // 固定只能是线上支付
+        orderComment: this.remark,
+        orderDetailList: this.tradeinfo.detailArrayList, // 存储多个商品信息的列表
+      };
+
+      // 结果返回一个订单id
+      const orderId = await reqSubmitOrder(params);
+      console.log('提交订单结果', orderId);
+
+      this.$router.push({
+        name: 'Pay',
+        query: {
+          orderId,
+        },
+      });
+    },
   },
 };
 </script>

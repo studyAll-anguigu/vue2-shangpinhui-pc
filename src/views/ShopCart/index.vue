@@ -49,7 +49,7 @@
             <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="delOneCart(cart.skuId)">删除</a>
             <br />
           </li>
         </ul>
@@ -66,7 +66,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a @click="delBatchCart(batchDeleteSkuIdList)">删除选中的商品</a>
       </div>
       <div class="money-box">
         <div class="chosed">已选择 <span>0</span>件商品</div>
@@ -98,7 +98,7 @@ export default {
     ...mapState('shopCart', ['cartInfoList']),
 
     // 把vuex中的所有格gegters映射到当前组件
-    ...mapGetters('shopCart', ['isAllChecked']),
+    ...mapGetters('shopCart', ['isAllChecked', 'batchDeleteSkuIdList']),
   },
   mounted() {
     //方法1、 直接触发vuex中的action    获取购物测列表
@@ -106,6 +106,7 @@ export default {
 
     // 方法2、 调用通过mapActions映射进来的方法取 获取数据 （推荐，最好） 。
     this.getCartList();
+    console.log('即将删除的id列表：', this.batchDeleteSkuIdList);
   },
   methods: {
     // 将vuex中的actinn映射到当前组件的methoss中，当前组件通过this.xxxx调用方法
@@ -114,6 +115,8 @@ export default {
       'UpdateOnecheckCart',
       'UpdateAllcheckCart',
       'updateCartSkuNum',
+      'delOneCart',
+      'delBatchCart',
     ]),
 
     // 防抖优化，只触发最后一次，避免多次连续改变时，改变的值不对

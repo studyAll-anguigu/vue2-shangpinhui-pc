@@ -45,3 +45,21 @@ export const reqUpdateSkuNum = (skuId, skuNum) => {
     url: `/cart/addToCart/${skuId}/${skuNum}`,
   });
 };
+
+// 删除购车商品 （单个）
+export const reqDelOneCart = (skuId) => {
+  return {
+    method: 'DELETE',
+    url: `/cart/deleteCart/${skuId}`,
+  };
+};
+
+// 删除购物车商品 （批量）
+// skuIdList 商品id列表
+export const reqDelBatchCart = (skuIdList) => {
+  return {
+    method: 'post',
+    url: `/cart/batchDeleteCart`,
+    data: skuIdList,
+  };
+};

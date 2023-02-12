@@ -6,6 +6,8 @@ import {
   reqUpdateOnecheckCart,
   reqBatchCheckCart,
   reqUpdateSkuNum,
+  reqDelOneCart,
+  reqDelBatchCart,
 } from '@/api/shopCart';
 
 // 注册vuex
@@ -23,6 +25,14 @@ export default {
         state.cartInfoList.every((item) => item.isChecked) &&
         state.cartInfoList.length
       );
+    },
+    // 批量删除的id列表
+    batchDeleteSkuIdList(state) {
+      let list = [];
+      state.cartInfoList.forEach((item) => {
+        if (item.isChecked) list.push(item.skuId);
+      });
+      return list;
     },
   },
   mutations: {
@@ -55,8 +65,7 @@ export default {
       });
       context.commit('SET_CART_LIST', list);
     },
-
-    // 批量
+    // 全选 、 全不选
     async UpdateAllcheckCart({ state, commit }, isChecked) {
       let target = isChecked === false ? 0 : 1;
       // 获得ID列表
@@ -71,7 +80,6 @@ export default {
 
       commit('SET_CART_LIST', list);
     },
-
     // 添加到购物车 (改变购物车列表的商品数量, 对已有物品进行数量改动)
     async updateCartSkuNum(context, data) {
       const skuId = data.skuId;
@@ -87,6 +95,25 @@ export default {
         return item;
       });
       context.commit('SET_CART_LIST', cartInfoList);
+    },
+    // 删除购物车商品 （单个）
+    async delOneCart(context, skuId) {
+      let list = context.state.cartInfoList;
+      await reqDelOneCart(skuId);
+
+      list = list.filter((item) => item.skuId !== skuId);
+      context.commit('SET_CART_LIST', list);
+    },
+    // 删除购物车商品（批量）
+    async delBatchCart(context, skuIdList) {
+      await reqDelBatchCart(skuIdList);
+      let list = context.state.cartInfoList;
+
+      list = list.filter((item) => {
+        // skuid包含在删除商品列表内，则过滤掉
+        return !skuIdList.includes(item.skuId);
+      });
+      context.commit('SET_CART_LIST', list);
     },
   },
 };

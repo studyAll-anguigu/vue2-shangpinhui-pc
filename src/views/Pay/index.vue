@@ -74,7 +74,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="toPay">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -87,12 +87,45 @@
         </div>
       </div>
     </div>
+    <!-- 
+    Dialog 组件内就是插槽：
+      两个子元素，代表Dialog有2个插槽
+      <span>内容</span>  ： 默认插槽
+      <span slot="footer">  : 具名插槽。 在组件中定义了name=’footer‘的slot 显示
+
+    -->
+    <Dialog
+      title="订单支付"
+      :visible.sync="DiaglogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>内容</span>
+      <span slot="footer" class="dialog-footer">
+        <button @click="DiaglogVisible = false">取消</button>
+        <button @click="DiaglogVisible = false" style="">确定</button>
+      </span>
+    </Dialog>
   </div>
 </template>
 
 <script>
+import Dialog from '@/components/Dialog';
 export default {
   name: 'XPay',
+  components: { Dialog },
+  data() {
+    return {
+      DiaglogVisible: false,
+    };
+  },
+  methods: {
+    handleClose() {},
+    toPay() {
+      this.DiaglogVisible = true;
+      // to="/paysuccess"
+    },
+  },
 };
 </script>
 

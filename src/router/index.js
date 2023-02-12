@@ -8,6 +8,10 @@ import Search from '@/views/Search';
 import Detail from '@/views/Detail';
 import AddCartSuccess from '@/views/AddCartSuccess';
 import ShopCart from '@/views/ShopCart';
+import Center from '@/views/Center';
+import Pay from '@/views/Pay';
+import PaySuccess from '@/views/PaySuccess';
+import Trade from '@/views/Trade';
 
 Vue.use(VueRouter);
 
@@ -55,6 +59,27 @@ export default new VueRouter({
       component: ShopCart,
       name: 'ShopCart',
     },
+    {
+      path: '/center',
+      component: Center,
+      name: 'Center',
+    },
+    {
+      path: '/pay',
+      component: Pay,
+      name: 'Pay',
+    },
+    {
+      path: '/paysuccess',
+      component: PaySuccess,
+      name: 'PaySuccess',
+    },
+    {
+      path: '/trade',
+      component: Trade,
+      name: 'Trade',
+    },
+
     {
       path: '*',
       redirect: '/home',

@@ -77,7 +77,7 @@
           <i class="summoney"> {{ totalPrice }} </i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" @click="toTrade">结算</a>
         </div>
       </div>
     </div>
@@ -139,6 +139,12 @@ export default {
     updateAllchecked(e) {
       let target = e.target.checked;
       this.UpdateAllcheckCart(target);
+    },
+
+    // 跳转到订单列表页
+    toTrade() {
+      if (!this.totalNums) return;
+      this.$router.push('/trade');
     },
   },
 };

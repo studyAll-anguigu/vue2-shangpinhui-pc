@@ -143,7 +143,7 @@ export default {
 
     // 跳转到订单列表页
     toTrade() {
-      if (!this.totalNums) return;
+      if (!this.totalNums) return this.$message.warning('请选择购买商品');
       this.$router.push('/trade');
     },
   },

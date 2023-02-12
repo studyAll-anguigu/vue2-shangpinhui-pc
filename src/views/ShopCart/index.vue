@@ -46,7 +46,7 @@
             />
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ cart.cartPrice }}</span>
+            <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet">删除</a>

@@ -34,6 +34,28 @@ export default {
       });
       return list;
     },
+    // 已选商品数量
+    totalNums(state) {
+      const list = state.cartInfoList;
+      let nums = 0;
+      list.forEach((item) => {
+        if (item.isChecked) {
+          nums += item.skuNum;
+        }
+      });
+      return nums;
+    },
+    // 总价
+    totalPrice(state) {
+      let total = 0;
+      let list = state.cartInfoList;
+      list.forEach((item) => {
+        if (item.isChecked) {
+          total += item.skuNum * item.skuPrice;
+        }
+      });
+      return total;
+    },
   },
   mutations: {
     // 更新state, 并同步缓存

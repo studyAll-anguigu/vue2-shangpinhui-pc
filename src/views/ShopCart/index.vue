@@ -69,10 +69,12 @@
         <a @click="delBatchCart(batchDeleteSkuIdList)">删除选中的商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">
+          已选择 <span>{{ totalNums }} </span>件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney"> {{ totalPrice }} </i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -98,7 +100,12 @@ export default {
     ...mapState('shopCart', ['cartInfoList']),
 
     // 把vuex中的所有格gegters映射到当前组件
-    ...mapGetters('shopCart', ['isAllChecked', 'batchDeleteSkuIdList']),
+    ...mapGetters('shopCart', [
+      'isAllChecked',
+      'batchDeleteSkuIdList',
+      'totalNums',
+      'totalPrice',
+    ]),
   },
   mounted() {
     //方法1、 直接触发vuex中的action    获取购物测列表
@@ -106,7 +113,7 @@ export default {
 
     // 方法2、 调用通过mapActions映射进来的方法取 获取数据 （推荐，最好） 。
     this.getCartList();
-    console.log('即将删除的id列表：', this.batchDeleteSkuIdList);
+    console.log('已选总数', this.totalNums);
   },
   methods: {
     // 将vuex中的actinn映射到当前组件的methoss中，当前组件通过this.xxxx调用方法

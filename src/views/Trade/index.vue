@@ -44,38 +44,20 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="trade in tradeinfo" :key="trade.id">
           <li>
-            <img src="./images/goods.png" alt="" />
+            <img :src="trade.imgUrl" alt="" class="good-img" />
           </li>
           <li>
             <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色
-              移动联通电信4G手机硅胶透明防摔软壳 本色系列
+              {{ trade.skuName }}
             </p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥ {{ trade.orderPrice }}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="" />
-          </li>
-          <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色
-              移动联通电信4G手机硅胶透明防摔软壳 本色系列
-            </p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>X {{ trade.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -84,6 +66,7 @@
         <textarea
           placeholder="建议留言前先与商家沟通确认"
           class="remarks-cont"
+          v-model="remark"
         ></textarea>
       </div>
       <div class="line"></div>
@@ -97,7 +80,7 @@
       <ul>
         <li>
           <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <span>¥ {{ originalTotalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -110,7 +93,9 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额: <span>¥5399.00</span></div>
+      <div class="price">
+        应付金额: <span>¥ {{ totalAmount }}</span>
+      </div>
       <div class="receiveInfo">
         寄送至:
         <span>北京市昌平区宏福科技园综合楼6层</span>
@@ -125,12 +110,31 @@
 </template>
 
 <script>
+import { reqTradeInfo } from '@/api/pay.js';
 export default {
   name: 'XTrade',
+  data() {
+    return {
+      tradeinfo: [], // 交易列表信息
+      totalAmount: 0, //  总价格（优惠后）
+      originalTotalAmount: 0, //  总价格(优惠前)
+      remark: '', // 买家留言，备注
+    };
+  },
+  async mounted() {
+    const res = await reqTradeInfo(1, 3);
+    this.tradeinfo = res.detailArrayList;
+    this.totalAmount = res.totalAmount;
+    this.originalTotalAmount = res.originalTotalAmount;
+    console.log('订单列表', res);
+  },
 };
 </script>
 
 <style lang="less" scoped>
+.good-img {
+  max-width: 150px;
+}
 .trade-container {
   .title {
     width: 1200px;

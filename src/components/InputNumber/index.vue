@@ -37,23 +37,28 @@ export default {
       type: Number,
       default: 10,
     },
+    value: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
-      currentNum: this.min,
+      currentNum: this.value,
     };
   },
   methods: {
-    // 点击按钮
+    // 点击 + 、- 按钮
     updateNumber(number) {
       this.currentNum += number;
-      this.$emit('input', this.currentNum); // 触发组件绑定的unput事件
     },
+    // 输入框失去焦点时
     setCurrentNumber(e) {
       this.currentNum = e.target.value;
     },
   },
   watch: {
+    // 监听输入框当前的值
     currentNum(newValue, oldValue) {
       const { min, max } = this;
       let num = Math.round(newValue);
@@ -69,7 +74,7 @@ export default {
 
       this.currentNum = num;
       // 触发父组件的ingput事件
-      this.$emit('input', this.currentNum);
+      this.$emit('input', num);
     },
   },
 };

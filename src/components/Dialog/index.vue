@@ -36,6 +36,20 @@ export default {
       default: '50%',
     },
   },
+  watch: {
+    visible: {
+      handler(newVal) {
+        console.log('visible：', newVal);
+        // 弹框出来时，禁用外面的滚动条
+        if (newVal) {
+          document.documentElement.style.overflow = 'hidden';
+        } else {
+          document.documentElement.style.overflow = 'auto';
+        }
+      },
+      immediate: true,
+    },
+  },
   data() {
     return {};
   },
@@ -43,6 +57,9 @@ export default {
     close() {
       this.$emit('update:visible', false);
     },
+  },
+  beforeDestroy() {
+    document.documentElement.style.overflow = 'auto';
   },
 };
 </script>

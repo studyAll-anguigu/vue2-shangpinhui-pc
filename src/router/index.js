@@ -25,6 +25,9 @@ export default new VueRouter({
       path: '/home',
       component: Home,
       name: 'Home',
+      meta: {
+        title: '首页',
+      },
     },
     {
       path: '/login',
@@ -32,6 +35,7 @@ export default new VueRouter({
       name: 'Login',
       meta: {
         isHideFooter: true, // 隐藏footer
+        title: '登录',
       },
     },
     {
@@ -40,47 +44,72 @@ export default new VueRouter({
       name: 'Register',
       meta: {
         isHideFooter: true,
+        title: '注册',
       },
     },
     {
       path: '/search',
       component: Search,
       name: 'Search',
+      meta: {
+        title: '搜索页',
+      },
     },
     {
       path: '/detail/:id',
       component: Detail,
       name: 'Detail',
+      meta: {
+        title: '商品详情页',
+      },
     },
     {
       path: '/addcartsuccess',
       component: AddCartSuccess,
       name: 'AddCartSuccess',
+      meta: {
+        title: '添加购物车成功',
+      },
     },
     {
       path: '/shopcart',
       component: ShopCart,
       name: 'ShopCart',
+      meta: {
+        title: '购物车列表页',
+      },
     },
     {
       path: '/center',
       component: Center,
       name: 'Center',
+      meta: {
+        title: '订单列表',
+      },
     },
     {
       path: '/pay',
       component: Pay,
       name: 'Pay',
+      meta: {
+        title: '支付',
+      },
     },
     {
       path: '/paysuccess',
       component: PaySuccess,
       name: 'PaySuccess',
+      meta: {
+        title: '支付成功',
+      },
     },
     {
       path: '/trade',
       component: Trade,
       name: 'Trade',
+      meta: {
+        title: '订单信息确认',
+      },
     },
 
     {

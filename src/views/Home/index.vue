@@ -38,6 +38,8 @@ export default {
   async mounted() {
     const data = await reqGetHomeFloors();
     this.floorsData = data;
+
+    console.log(this.$route);
   },
 };
 </script>

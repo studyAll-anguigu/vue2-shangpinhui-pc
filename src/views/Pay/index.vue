@@ -100,31 +100,55 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>内容</span>
+      <!-- 这里展示支付二维码 -->
+      <img :src="codeImg" alt="" />
       <span slot="footer" class="dialog-footer">
-        <button @click="DiaglogVisible = false">取消</button>
-        <button @click="DiaglogVisible = false" style="">确定</button>
+        <button @click="DiaglogVisible = false">已完成支付</button>
+        <button @click="DiaglogVisible = false" style="">支付遇到问题</button>
       </span>
     </Dialog>
   </div>
 </template>
 
 <script>
+import QRCode from 'qrcode';
 import Dialog from '@/components/Dialog';
+import { reqGetQrCode, reqQueryPayStatus } from '@/api/pay';
 export default {
   name: 'XPay',
   components: { Dialog },
   data() {
     return {
       DiaglogVisible: false,
+      codeImg: '',
     };
   },
   methods: {
-    handleClose() {},
-    toPay() {
-      this.DiaglogVisible = true;
-      // to="/paysuccess"
+    handleClose() {
+      console.log('关闭弹框处理');
     },
+    async toPay() {
+      this.DiaglogVisible = true;
+      // 获取二维码的url
+      const res = await reqGetQrCode(this.$route.query.orderId);
+      let codeUrl = res.codeUrl;
+
+      // 将支付地址生成二维码图片
+      this.codeImg = await QRCode.toDataURL(codeUrl);
+
+      // 开启新的定时器之前，前清空旧的定时器. (因为可能会有用户点了多次支付按钮的情况。)
+      clearInterval(this.timeId);
+
+      // 定时发送请求，查看订单支付状态
+      this.timeId = setInterval(async () => {
+        await reqQueryPayStatus(this.$route.query.orderId);
+        // 支付成功后，跳转到字符成功页面
+        this.$router.push('/paysuccess');
+      }, 10000);
+    },
+  },
+  beforeDestroy() {
+    clearInterval(this.timeId);
   },
 };
 </script>

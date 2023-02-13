@@ -39,7 +39,6 @@ export default {
   watch: {
     visible: {
       handler(newVal) {
-        console.log('visible：', newVal);
         // 弹框出来时，禁用外面的滚动条
         if (newVal) {
           document.documentElement.style.overflow = 'hidden';

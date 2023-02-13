@@ -86,8 +86,8 @@ export default {
   components: { ValidationObserver, ValidationProvider },
   data() {
     return {
-      phone: '',
-      password: '',
+      phone: '13713504691',
+      password: '123456',
     };
   },
   methods: {

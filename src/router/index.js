@@ -1,17 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from '@/views/Home';
-import Login from '@/views/Login';
-import Register from '@/views/Register';
-import Search from '@/views/Search';
-import Detail from '@/views/Detail';
-import AddCartSuccess from '@/views/AddCartSuccess';
-import ShopCart from '@/views/ShopCart';
-import Center from '@/views/Center';
-import Pay from '@/views/Pay';
-import PaySuccess from '@/views/PaySuccess';
-import Trade from '@/views/Trade';
+//   /* webpackChunkName: "Home" */ 是webpack的特殊备注，
+// 作用在于打包项目时，打包后对应的js文件会以指定名称命名
+
+const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home');
+const Login = () => import('@/views/Login');
+const Register = () => import('@/views/Register');
+const Search = () => import('@/views/Search');
+const Detail = () => import('@/views/Detail');
+const AddCartSuccess = () => import('@/views/AddCartSuccess');
+const ShopCart = () => import('@/views/ShopCart');
+const Center = () => import('@/views/Center');
+const Pay = () => import('@/views/Pay');
+const PaySuccess = () => import('@/views/PaySuccess');
+const Trade = () => import('@/views/Trade');
 
 Vue.use(VueRouter);
 

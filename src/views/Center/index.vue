@@ -151,32 +151,14 @@
               </table>
             </div>
             <div class="choose-order">
-              <div class="pagination">
-                <ul>
-                  <li class="prev disabled">
-                    <a href="javascript:">«上一页</a>
-                  </li>
-                  <li class="page actived">
-                    <a href="javascript:">1</a>
-                  </li>
-                  <li class="page">
-                    <a href="javascript:">2</a>
-                  </li>
-                  <li class="page">
-                    <a href="javascript:">3</a>
-                  </li>
-                  <li class="page">
-                    <a href="javascript:">4</a>
-                  </li>
-
-                  <li class="next disabled">
-                    <a href="javascript:">下一页»</a>
-                  </li>
-                </ul>
-                <div>
-                  <span>&nbsp;&nbsp;&nbsp;&nbsp;共2页&nbsp;</span>
-                </div>
-              </div>
+              <Paginaton
+                :total="total"
+                :pageSize="pageSize"
+                :currentPage="currentPage"
+                @changeSize="handleSizeChange"
+                @changePage="handleCurrentPage"
+                :pageSizeList="[5, 10, 15, 20]"
+              ></Paginaton>
             </div>
           </div>
           <!--猜你喜欢-->
@@ -243,24 +225,37 @@
 
 <script>
 import { reqGetOrderList } from '@/api/order';
+import Paginaton from '@/components/Paginaton';
 export default {
   name: 'XCenter',
+  components: { Paginaton },
   data() {
     return {
       orderList: [],
       total: 0,
+      currentPage: 1,
+      pageSize: 5,
     };
   },
+
   mounted() {
     this.getOrderList();
   },
   methods: {
     // 获取订单列表
     async getOrderList() {
-      const res = await reqGetOrderList(1, 5);
+      const res = await reqGetOrderList(this.currentPage, this.pageSize);
       this.orderList = res.records;
       this.total = res.total;
       console.log('orderinfo', this.orderList);
+    },
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getOrderList(this.currentPage, this.pageSize);
+    },
+    handleCurrentPage(currentPage) {
+      this.currentPage = currentPage;
+      this.getOrderList(this.currentPage, this.pageSize);
     },
   },
 };
@@ -431,53 +426,6 @@ export default {
                     text-align: center;
                   }
                 }
-              }
-            }
-          }
-
-          // 分页
-          .choose-order {
-            .pagination {
-              margin: 38px 0;
-
-              ul {
-                font-size: 0;
-                display: inline-block;
-
-                li {
-                  display: inline-block;
-                  padding: 4px 9px;
-                  font-size: 14px;
-                  border: 1px solid #e0e9ee;
-
-                  &.prev,
-                  &.next {
-                    background-color: #fafafa;
-                  }
-
-                  &.prev {
-                    border-right-color: #28a3ef;
-                  }
-
-                  &.page {
-                    border-color: #28a3ef;
-                    border-left: 0;
-
-                    &.actived {
-                      background-color: #28a3ef;
-
-                      a {
-                        color: #fff;
-                      }
-                    }
-                  }
-                }
-              }
-
-              div {
-                display: inline-block;
-                font-size: 14px;
-                color: #333;
               }
             }
           }

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '@/store';
 
 //   /* webpackChunkName: "Home" */ 是webpack的特殊备注，
 // 作用在于打包项目时，打包后对应的js文件会以指定名称命名
@@ -18,7 +19,7 @@ const Trade = () => import('@/views/Trade');
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes: [
     {
@@ -126,3 +127,34 @@ export default new VueRouter({
     };
   },
 });
+
+//权限验证： 我的订单，我的购物车，添加购物车，支付
+const auth_list = [
+  'Center',
+  'ShopCart',
+  'AddCartSuccess',
+  'Pay',
+  'PaySuccess',
+  'Trade',
+];
+
+// 全局 前置路由导航守卫
+router.beforeEach((to, from, next) => {
+  console.log('to', to);
+  console.log('form', from);
+  // 如果当前的name在验证列表内，如果不在验证列表，则直接放行
+  if (auth_list.includes(to.name)) {
+    // 如果已经存在token,继续放行，否则去登录页
+    if (store.state.user.token) {
+      next();
+    } else {
+      next({
+        name: 'Login',
+      });
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

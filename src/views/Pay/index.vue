@@ -100,29 +100,41 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>内容</span>
+      <!-- 这里展示支付二维码 -->
+      <img :src="codeImg" alt="" />
       <span slot="footer" class="dialog-footer">
-        <button @click="DiaglogVisible = false">取消</button>
-        <button @click="DiaglogVisible = false" style="">确定</button>
+        <button @click="DiaglogVisible = false">已完成支付</button>
+        <button @click="DiaglogVisible = false" style="">支付遇到问题</button>
       </span>
     </Dialog>
   </div>
 </template>
 
 <script>
+import QRCode from 'qrcode';
 import Dialog from '@/components/Dialog';
+import { reqGetQrCode } from '@/api/pay';
 export default {
   name: 'XPay',
   components: { Dialog },
   data() {
     return {
       DiaglogVisible: false,
+      codeImg: '',
     };
   },
   methods: {
-    handleClose() {},
-    toPay() {
+    handleClose() {
+      console.log('关闭弹框处理');
+    },
+    async toPay() {
       this.DiaglogVisible = true;
+      // 获取二维码的url
+      const res = await reqGetQrCode(this.$route.query.orderId);
+      let codeUrl = res.codeUrl;
+
+      // 将二维码url生成二维码图片
+      this.codeImg = await QRCode.toDataURL(codeUrl);
       // to="/paysuccess"
     },
   },

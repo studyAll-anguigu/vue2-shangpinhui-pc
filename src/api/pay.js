@@ -31,10 +31,10 @@ export const reqSubmitOrder = ({ tradeNo, ...data }) => {
   });
 };
 
-// 获取订单列表
-export const reqOrderList = (page = 1, limit = 5) => {
+// 获取订单支付信息 (获取二维码url)
+export const reqGetQrCode = (orderId) => {
   return request({
     method: 'get',
-    url: `/order/auth/${page}/${limit}`,
+    url: `/payment/weixin/createNative/${orderId}`,
   });
 };

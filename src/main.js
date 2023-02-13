@@ -15,8 +15,19 @@ import '@/styles/iconfont.css';
 // 全局引入el-elmentui组件库
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
 Vue.use(ElementUI);
+
+// 引入图片懒加载库
+const loadimage = require('./assets/loading.png');
+const errorimage = require('./assets/error.png');
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: errorimage,
+  loading: loadimage,
+  attempt: 1,
+});
+
 Vue.config.productionTip = false;
 
 new Vue({

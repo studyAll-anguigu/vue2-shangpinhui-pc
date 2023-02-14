@@ -407,6 +407,17 @@ export default {
     },
     // 加入购物车
     async addTocart() {
+      // 判断当前是否已经登录
+      if (!this.$store.state.user.token) {
+        this.$router.push({
+          name: 'Login',
+          query: {
+            // 携带把当前路径也传过去，目的就是当登录后，直接跳到加入购物车的页面。
+            redirect: this.$route.path,
+          },
+        });
+        return;
+      }
       // 调用addToCart接口
       await addToCart(this.skuInfo.id, this.shopingInfo.skuNum);
       this.$router.push({

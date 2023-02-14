@@ -100,7 +100,9 @@ export default {
         password: this.password,
       });
       this.$router.push({
-        name: 'Home',
+        // name: 'Home',
+        // 如果存在redirect ，登陆后就跳转,否则默认跳到home页面
+        path: this.$route.query.redirect || '/home',
       });
     },
   },

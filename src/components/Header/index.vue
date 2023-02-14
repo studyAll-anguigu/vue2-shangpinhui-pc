@@ -64,6 +64,10 @@ export default {
       await this.$store.dispatch('user/logout');
       this.$router.history.push({
         name: 'Login',
+        query: {
+          // 携带把当前路径也传过去，目的就是当登录后，直接重定向登陆之前的页面。
+          redirect: this.$route.path,
+        },
       });
     },
   },

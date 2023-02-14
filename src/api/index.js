@@ -1,7 +1,7 @@
 // api 汇总
 //  这里的其他ap文件是使用分别暴露的方式暴露。
 
-// 引入分别暴露的内容
+//  引入各个文件中暴露的所有内容
 import * as detail from './detail';
 import * as home from './home';
 import * as order from './order';

@@ -6,7 +6,7 @@ import router from './router/index';
 import store from './store/index.js';
 
 // 导入api/index.js 默认暴露的所有内容
-import api from '@/api/index.js';
+import * as api from '@/api/index.js';
 Vue.prototype.$api = api;
 
 // 引入重置默认样式

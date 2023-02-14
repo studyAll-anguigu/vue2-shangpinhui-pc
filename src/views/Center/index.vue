@@ -224,7 +224,7 @@
 </template>
 
 <script>
-import { reqGetOrderList } from '@/api/order';
+// import { reqGetOrderList } from '@/api/order';
 import Paginaton from '@/components/Paginaton';
 export default {
   name: 'XCenter',
@@ -244,10 +244,19 @@ export default {
   methods: {
     // 获取订单列表
     async getOrderList() {
-      const res = await reqGetOrderList(this.currentPage, this.pageSize);
+      // 没有统一汇总api时，需要先导入api，然后再调用
+      // const res = await reqGetOrderList(this.currentPage, this.pageSize);
+      // console.log(this.$api);
+
+      // api/index.js 统一汇总，并且再main.js中网vue的原型上添加整个api对象，
+      // 即可通过this.$api.模块名.接口名 去调用了
+      const res = await this.$api.order.reqGetOrderList(
+        this.currentPage,
+        this.pageSize
+      );
       this.orderList = res.records;
       this.total = res.total;
-      console.log('orderinfo', this.orderList);
+      // console.log('orderinfo', this.orderList);
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
